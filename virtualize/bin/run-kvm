@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# SPDX-License-Identifier: MulanPSL-2.0
+
+name=${1:-default}
+
+declare -A os_map=(
+    [default]='0 /var/share/kvm-img/default.img'
+    [archlinux]='1 /var/share/kvm-img/archlinux-2021.07.01-x86_64.qcow2'
+    [debian]='2 /var/share/kvm-img/debian-live-10.10.0-amd64-gnome.qcow2'
+    [deepin]='3 /var/share/kvm-img/deepin-desktop-community-20.2.2-amd64.qcow2'
+    [kali]='4 /var/share/kvm-img/kali-linux-2021.2-live-amd64.qcow2'
+    [ubuntu]='5 /var/share/kvm-img/ubuntu-20.04.2.0-desktop-amd64.qcow2'
+    [win10]='6 /var/share/kvm-img/cn_windows_10_consumer_editions_version_21h1_x64_dvd_1baf479d.qcow2'
+    [centos]='7 /var/share/kvm-img/CentOS-7-x86_64-Everything-2009.qcow2'
+)
+[ -n "${os_map[$name]}" ] || exit 1
+
+if [ "$(arch)" == 'aarch64' ] ;then
+    # gic-version: fix qemu hung status
+    machine='type=virt,accel=kvm,dump-guest-core=on,usb=off,gic-version=3'
+    bios='/usr/share/edk2/aarch64/QEMU_EFI.fd'
+elif [ "$(arch)" == 'x86_64' ] ;then
+    machine='type=pc,accel=kvm,dump-guest-core=on,usb=off'
+    bios='/usr/share/qemu/bios.bin'
+else
+    echo "Only support x86_64,aarch64 machine!"
+    exit 2
+fi
+
+macaddr=$(echo $USER-$PPID-$$ | md5sum | sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\)\(..\).*$/0a-\1-\2-\3-\4-\5/')
+index=$(echo ${os_map[$name]} | awk '{print $1;exit}')
+image=$(echo ${os_map[$name]} | awk '{print $2;exit}')
+cmds=(
+    qemu-system-$(arch)
+    -name $name
+    -machine $machine
+    -bios $bios
+    -cpu host # Error: KVM is not supported for this guest CPU type.
+    -smp 4
+    -m 4G
+    -hda $image
+    -rtc base=utc
+    -full-screen
+    -display gtk,show-cursor=on
+    -vga virtio
+    -sdl
+    -nic user,hostfwd=tcp:127.0.0.1:$((10000+index))-:22
+    -daemonize
+)
+
+"${cmds[@]}"

@@ -1,0 +1,20 @@
+" VIM 基础配置
+source $HOME/.vim/config/basic.vim
+" 快捷键
+source $HOME/.vim/config/map.vim
+" 配色
+source $HOME/.vim/config/color.vim
+
+" VIM 插件管理器
+call plug#begin('~/.vim/plugged')
+
+Plug 'neoclide/coc.nvim',{'branch':'release'} " 代码补全
+Plug 'yianwillis/vimcdoc'                     " 中文帮助文档
+Plug 'chxuan/change-colorscheme'              " 切换主题
+
+" 配色主题
+Plug 'morhetz/gruvbox'
+Plug 'altercation/vim-colors-solarized'
+Plug 'tomasr/molokai'
+
+call plug#end()

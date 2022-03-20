@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# 统计提交邮箱代码量
+# $1: 代码仓所有文件夹
+# $2: 提交邮箱
+
+. tlog
+
+target=${1:-${PWD}}
+email=${2:-'angus_robot@163.com'}
+
+total=0
+for t in $(find $target -type d -name '.git')
+do
+    repo=$(dirname $(realpath $t))
+    repo_name=$(basename $repo)
+    repo_dir=$(dirname $repo)
+    res=($(cd $repo && git log --author="$email" --pretty=tformat: --numstat | gawk '{add += $1; subs += $2; loc += $1 - $2} END {printf "%s +%s -%s\n",loc,add,subs}'))
+    [ "${#res[@]}" -ne 0 ] || current=0
+    current=$(echo ${res[@]} | awk '{print $1;exit}')
+    [ "$current" -gt 0 ] 2>/dev/null || continue
+    printG "$repo_name:$(cd $repo && git branch | grep '^*' | awk '{print $2;exit}') under $repo_dir: ${res[@]}"
+    total=$((total + current))
+done
+[ "$total" -eq 0 ] || printG
+
+printG "$email: $total"

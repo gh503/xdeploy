@@ -1,0 +1,92 @@
+#!/bin/sh
+
+. colors
+
+tdate() {
+    date +'%Y/%m/%d %H:%M:%S.%s'
+}
+
+trim() {
+    echo $(echo "$@")
+}
+
+printB() {
+    echo -e "${CYAN}$@${RESET}"
+}
+
+printG() {
+    echo -e "${GREEN}$@${RESET}"
+}
+
+printR() {
+    echo -e "${RED}$@${RESET}"
+}
+
+printY() {
+    echo -e "${YELLOW}$@${RESET}"
+}
+
+printM() {
+    echo -e "${BLINK}${MAGENTA}$@${RESET}"
+}
+
+tdebug() {
+    printB "$(tdate) $@"
+}
+
+tinfo() {
+    printG "$(tdate) $@"
+}
+
+twarn() {
+    printY "$(tdate) $@" >&2
+}
+
+terror() {
+    printR "$(tdate) $@" >&2
+}
+
+tfatal() {
+    printM "$(tdate) $@" >&2
+}
+
+tlog() {
+    local level="$1"
+    local string="$2"
+    local logfile="${3:-stdout}"
+
+    usage() {
+        printG "Usage: tlog <loglevel> <logstring> [logfile]"
+        printG "  - loglevel: debug|info|warn|error|fatal. default info."
+        printG "  - logstring: nonempty string."
+        printG "  - logfile: option. file to append string. default stdout."
+    }
+
+    [ "$#" -ne 0 ] || {
+        usage
+        return 0
+    }
+
+    [ -n "$level" -a -n "$string" ] || {
+        printR "error occurred!"
+        usage
+        return 1
+    }
+
+    echo 'debug|info|warn|error|fatal' | grep -wq $level || {
+        printR "loglevel wrong!"
+        usage
+        return 2
+    }
+
+    level="t$(echo $level | tr 'A-Z' 'a-z')"
+
+    if [ "$logfile" == 'stdout' ] ;then
+        eval "$level $string"
+    else
+        [ -f "$logfile" ] || :> $logfile
+        eval "$level $string" >> $logfile
+    fi
+
+    return 0
+}

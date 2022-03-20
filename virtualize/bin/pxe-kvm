@@ -1,0 +1,33 @@
+#!/bin/sh
+
+boot_type=${1:-legacy}
+gui_cli=${2:-cli}
+
+declare -A boot_map=(
+    [legacy]='/usr/share/qemu/bios-256k.bin'
+    [uefi]='/usr/share/edk2/ovmf/OVMF_CODE.fd'
+    [sec]='/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd'
+)
+[ -n "${boot_map[$boot_type]}" ] || exit 1
+[ "$gui_cli" == "gui" -o "$gui_cli" == 'cli' ] || exit 2
+
+macaddr=$(echo $USER-$PPID-$$ | md5sum | sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\)\(..\).*$/0a-\1-\2-\3-\4-\5/')
+cmd=(
+    qemu-kvm
+    -name pxe-kvm-$boot_type-$gui_cli
+    -machine type=pc,accel=kvm,vmport=on,dump-guest-core=on,usb=off
+    -smp 2
+    -m 1G
+    -bios ${boot_map[$boot_type]}
+    -boot order=n,menu=on,reboot-timeout=0
+    -hda /var/share/kvm-img/default.img
+    -rtc base=utc
+    -nodefaults
+)
+if [ "$gui_cli" == 'cli' ] ;then
+    cmd+=(-display none -nographic -parallel none -monitor none -serial stdio)
+else
+    cmd+=(-display gtk,show-cursor=on -sdl -vga virtio)
+fi
+
+"${cmd[@]}"

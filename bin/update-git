@@ -1,0 +1,18 @@
+#!/bin/bash
+
+. tlog
+
+target=${1:-${PWD}}
+
+for t in $(find $target -type d -name '.git')
+do
+    repo=$(dirname $(realpath $t))
+    repo_name=$(basename $repo)
+    repo_dir=$(dirname $repo)
+    if [ "$last" != "$repo_dir" ] ;then
+        printG "updating $repo_dir:"
+    fi
+    printG "  git-pull $repo_name:$(cd $repo && git branch | grep '^*' | awk '{print $2;exit}')"
+    ( cd $repo && git pull -q )
+    last=$repo_dir
+done

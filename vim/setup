@@ -1,0 +1,83 @@
+#!/bin/bash
+
+
+# nodejs
+wget -c https://npmmirror.com/mirrors/node/v16.14.2/node-v16.14.2-linux-x64.tar.xz &&
+tar xf node-v16.14.2-linux-x64.tar.xz &&
+mv node-v16.14.2-linux-x64 /opt &&
+ln -sf /opt/node-v16.14.2-linux-x64/bin/node /usr/local/bin/node &&
+ln -sf /opt/node-v16.14.2-linux-x64/bin/npm  /usr/local/bin/npm &&
+ln -sf /opt/node-v16.14.2-linux-x64/bin/npx  /usr/local/bin/npx &&
+rm -f node-v16.14.2-linux-x64
+
+npm config set registry https://registry.npm.taobao.org
+npm config set strict-ssl false
+npm install -g gulp-cli
+
+
+# python
+sudo apt install -y python3 python2 python3-pip ipython3
+
+mkdir -p $HOME/.pip
+cat > $HOME/.pip/pip.conf <<EOF
+[global]
+index-url = https://repo.huaweicloud.com/repository/pypi/simple
+trusted-host = repo.huaweicloud.com
+disable-pip-version-check = true
+timeout = 120
+EOF
+
+ln -sf $(which python3) /usr/bin/python
+python -m pip install virtualenv virtualenvwrapper
+
+cat >> $HOME/.shell/shared_env <<EOF
+
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+EOF
+
+cat >> $HOME/.shell/shared_alias <<EOF
+
+alias pi='python -m pip install'
+alias pu='python -m pip uninstall'
+alias pl='python -m pip list'
+EOF
+
+
+# ruby
+sudo apt install -y ruby-full
+gem sources -r https://rubygems.org/ -a https://gems.ruby-china.com/
+gem sources -u
+gem sources -l
+gem install mdless
+
+
+# tclsh
+sudo apt install -y tcl expect
+cat > $HOME/.tclshrc <<'EOF'
+#!/usr/bin/env tclsh
+
+puts "\nHi $env(USER)! Welcome to Tcl/Tk World~\n"
+
+set tcl_prompt1 {puts -nonewline "$env(USER)@tclsh$tcl_version \$ "}
+EOF
+
+
+# java
+sudo apt install -y openjdk-17-jdk
+
+
+# vim
+sudo apt install -y vim
+cp -r .vim ~
+
+vim -e -c "PlugInstall"
+vim -e -c "CocInstall coc-marketplace coc-pairs coc-highlight coc-sh coc-clangd coc-cmake coc-java coc-pyright coc-solargraph coc-json coc-css coc-html"
+cat > $HOME/.vim/coc-settings.json <<'EOF'
+{
+    "python.pythonPath": "/usr/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.pep8Enabled": true,
+    "python.linting.enabled": false
+}
+EOF

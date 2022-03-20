@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# 获取指定目录所有git仓库，默认当前目录
+# $1 目标路径
+
+. tlog
+
+target=${1:-${PWD}}
+
+for t in $(find $target -type d -name '.git')
+do
+    repo=$(dirname $(realpath $t))
+    repo_name=$(basename $repo)
+    repo_dir=$(dirname $repo)
+    if [ "$last" != "$repo_dir" ] ;then
+        printG "$repo_dir:"
+    fi
+    printG "  $repo_name:$(cd $repo && git branch | grep '^*' | awk '{print $2;exit}')"
+    last=$repo_dir
+done
