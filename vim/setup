@@ -28,12 +28,17 @@ EOF
 
 ln -sf $(which python3) /usr/bin/python
 python -m pip install virtualenv virtualenvwrapper
-
-cat >> $HOME/.shell/shared_env <<EOF
+virtualenvwrapper=
+for f in $(which virtualenvwrapper.sh) '/usr/local/bin/virtualenvwrapper.sh' '/usr/share/virtualenvwrapper/virtualenvwrapper.sh'
+do
+    [ -f "$f" ] || continue
+    cat >> $HOME/.shell/shared_env <<EOF
 
 export WORKON_HOME=$HOME/.virtualenvs
-source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+source $f
 EOF
+    break
+done
 
 cat >> $HOME/.shell/shared_alias <<EOF
 
