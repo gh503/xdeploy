@@ -1,14 +1,5 @@
 #!/bin/bash
 
-read -p "请输入Git用户名(default angusrobot): " git_username
-read -p "请输入Git用户邮箱(default angus_robot@163.com): " git_useremail
-
-git_username=${git_username:-'angusrobot'}
-git_useremail=${git_useremail:-'angus_robot@163.com'}
-
-export git_username
-export git_useremail
-
 # basic
 sudo cp -a /etc/apt/sources.list{,.bak}
 sudo sed -i "s@http://.*archive.ubuntu.com@http://repo.huaweicloud.com@g" /etc/apt/sources.list
@@ -26,5 +17,5 @@ pkgs=(
 sudo apt install -y ${pkgs[@]}
 sudo apt dist-upgrade -y
 
-bash ./shell/setup
-bash ./vim/setup
+(cd shell && bash setup)
+(cd vim && bash setup)

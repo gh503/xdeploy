@@ -1,9 +1,5 @@
 #!/bin/bash
 
-echo $git_username
-echo $git_useremail
-exit
-
 # login shell
 sudo apt install -y zsh tmux
 
@@ -19,9 +15,12 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githu
 sudo apt update
 sudo apt install -y git gh
 
+read -p "请输入Git用户名(default angusrobot): " git_username
+read -p "请输入Git用户邮箱(default angus_robot@163.com): " git_useremail
+
 # 账号
-git config --global user.name $git_username
-git config --global user.email $git_useremail
+git config --global user.name ${git_username:-'angusrobot'}
+git config --global user.email ${git_useremail:-'angus_robot@163.com'}
 
 # 编辑
 git config --global core.editor vim
@@ -49,13 +48,12 @@ git config --global color.interactive auto
 
 # 安全认证
 git config --global http.sslVerify false
-git config --global http.postBuffer 5242880000
+git config --global http.postBuffer 1073741824
 git config --global credential.helper store
 
 # 别名
 git config --global alias.st status
-git config --global alias.lg log --color --graph --pretty=format:'%C(bold red)%h%C(reset) - %C(bold green)(%cr)%C(bold
-blue)<%an>%C(reset) -%C(bold yellow)%d%C(reset) %s' --abbrev-commit
+git config --global alias.lg log --color --graph --pretty=format:'%C(bold red)%h%C(reset) - %C(bold green)(%cr)%C(bold blue)<%an>%C(reset) -%C(bold yellow)%d%C(reset) %s'
 
 
 # 账号密码（ssh,gpg）
