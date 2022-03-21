@@ -54,9 +54,3 @@ git config --global credential.helper store
 # 别名
 git config --global alias.st status
 git config --global alias.lg "log --color --graph --pretty=format:'%C(bold red)%h%C(reset) - %C(bold green)(%cr)%C(bold blue)<%an>%C(reset) -%C(bold yellow)%d%C(reset) %s'""
-
-
-# 账号密码（ssh,gpg）
-git clone -q https://github.com/angusrobot/security
-(cd security && bash setup)
-[ -d security ] && rm -fr security
