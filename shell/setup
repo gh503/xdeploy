@@ -10,8 +10,10 @@ fi
 cp -r .shell .??* ~
 
 # git shell
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+[ -f '/etc/apt/sources.list.d/github-cli.list' ] || {
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+}
 sudo apt update
 sudo apt install -y git gh
 
@@ -48,9 +50,9 @@ git config --global color.interactive auto
 
 # 安全认证
 git config --global http.sslVerify false
-git config --global http.postBuffer 1073741824
+git config --global http.postBuffer 1073741824  # 1GB
 git config --global credential.helper store
 
 # 别名
 git config --global alias.st status
-git config --global alias.lg "log --color --graph --pretty=format:'%C(bold red)%h%C(reset) - %C(bold green)(%cr)%C(bold blue)<%an>%C(reset) -%C(bold yellow)%d%C(reset) %s'""
+git config --global alias.lg "log --color --graph --pretty=format:'%C(bold red)%h%C(reset) - %C(bold green)(%cr)%C(bold blue)<%an>%C(reset) -%C(bold yellow)%d%C(reset) %s'"
