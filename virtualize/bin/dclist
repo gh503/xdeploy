@@ -1,0 +1,9 @@
+#!/bin/bash
+
+. dccheck
+
+printG "list docker containers:"
+docker ps -a
+
+printG "\nlist docker images:"
+docker images -a

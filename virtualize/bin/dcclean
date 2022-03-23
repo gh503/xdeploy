@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. dccheck
+
+for c in $(docker ps -a --filter=status=created --filter=status=exited --filter=status=dead --quiet)
+do
+    tinfo "Removing container $c..."
+    docker rm $c >/dev/null
+done
+
+for i in $(docker images -a --filter=dangling=true --quiet)
+do
+    tinfo "Removing image $i..."
+    docker rmi $i >/dev/null
+done

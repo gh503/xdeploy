@@ -18,7 +18,7 @@ sudo apt install -y ${pkgs[@]}
 sudo apt dist-upgrade -y
 
 cp -r bin ~
-cp -r virtualize/bin ~
 
 (cd shell && bash setup)
 (cd vim && bash setup)
+(cd virtualize && bash setup)

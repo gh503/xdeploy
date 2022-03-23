@@ -1,0 +1,23 @@
+#!/bin/bash
+
+. tlog
+
+command -v docker >/dev/null || {
+    terror "install docker first please!"
+    exit 1
+}
+
+service docker status | grep -E -q 'is running|(running)' || {
+    terror "Is service docker running?"
+    exit 2
+}
+
+id | grep -w -q docker || {
+    terror "Is current user($USER) in docker group?"
+    exit 3
+}
+
+docker ps -a > /dev/null 2>&1 || {
+    terror "Execute command docker failed!"
+    exit 4
+}

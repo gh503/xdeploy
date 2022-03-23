@@ -7,7 +7,7 @@ tdate() {
 }
 
 trim() {
-    echo $(echo "$@")
+    echo -e $(echo "$@")
 }
 
 printB() {
@@ -18,15 +18,15 @@ printG() {
     echo -e "${GREEN}$@${RESET}"
 }
 
-printR() {
-    echo -e "${RED}$@${RESET}"
-}
-
 printY() {
     echo -e "${YELLOW}$@${RESET}"
 }
 
-printM() {
+printR() {
+    echo -e "${RED}$@${RESET}"
+}
+
+printP() {
     echo -e "${BLINK}${MAGENTA}$@${RESET}"
 }
 
@@ -47,7 +47,7 @@ terror() {
 }
 
 tfatal() {
-    printM "$(tdate) $@" >&2
+    printP "$(tdate) $@" >&2
 }
 
 tlog() {
