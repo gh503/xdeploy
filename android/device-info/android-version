@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+adb shell getprop ro.build.version.release

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+operate=$1
+
+token_demo='eyJhbGciOiJIUzUxMiJ9.eyJwaG9uZU51bWJlciI6ImRlbW8ifQ.sOhshIhWIh_ve8puuhgTtmLHOTEE2VTXrVPhr_e8XiquJjWKGzSaz8I3hbZNpAYZk4U7pe9v4zdqxQL89B0Yag'
+
+[ "$operate" == 'new' ] && {
+
+while read line
+do
+    ./sms-test 50020 "$token_demo" "$line"
+done < sample-sms
+
+exit 0
+}
+
+[ "$operate" == 'get' ] && {
+
+for app in $(cd appsms && ls -d *)
+do
+    ./get-app-smscode 50020 "$token_demo" $app
+done
+
+exit 0
+}

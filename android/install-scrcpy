@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# redhat install scrcpy
+# interact with android phone
+#   USB connected
+#   open andriod phone USB debug mode
+
+command -v dnf || exit 1
+
+sudo dnf install -y android-tools
+
+# https://github.com/Genymobile/scrcpy/blob/master/BUILD.md
+# enable RPM fusion free
+sudo dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+
+# client build dependencies
+sudo dnf install -y SDL2-devel ffms2-devel meson gcc make
+
+# server build dependencies
+sudo dnf install -y java-devel
+
+wget https://download.copr.fedorainfracloud.org/results/zeno/scrcpy/fedora-33-x86_64/01715608-scrcpy/scrcpy-1.16-3.fc33.x86_64.rpm
+rpm -ivh scrcpy-1.16-3.fc33.x86_64.rpm
+
+# expected to see phone UI
+scrcpy

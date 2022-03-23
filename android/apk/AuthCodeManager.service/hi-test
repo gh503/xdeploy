@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+
+port=$1
+ip=$(ip route get 1.2.3.4 | awk '{print $7;exit 0}')
+
+[ -n "$port" ] || exit 1
+[ -n "$ip" ] || exit 2
+
+url_root="http://$ip:$port"
+
+index_cmd=(
+        curl
+        $url_root
+)
+
+<<'EOF'
+token_cmd_post=(
+        curl
+        -X POST
+        -H 'Content-Type: application/json'
+        -d '{"username": "KunPengPC-TestBot",
+             "password": "bb7ac8477fb997b545ec06b1fcd9c11ad6db9f30d82ca19843941176eec64490",
+             "phoneNumber": "13456814576",
+             "msg": "apply for new token"}'
+        $url_root/token
+)
+
+sms_cmd_post=(
+        curl
+        -X POST
+        -H 'Content-Type: application/json'
+        -d '{"phoneNumber": "demo",
+             "token": "eyJhbGciOiJIUzUxMiJ9.eyJkZXZpY2VJZCI6ImRlbW8ifQ.Spoh4wsUP4SkDoai2f-TaLDtNFVKcRlO50OlKk8BNA48ebVwmg06xAMfTampUIWVQ2liVrUHgXflIzr9x1Jw_A",
+             "msg": "new sms",
+             "sms": "【学习强国】验证码：4498，15分钟内输入有效，立即登入"}'
+        $url_root/sms/new
+)
+
+sms_cmd_get=(
+        curl
+        -X POST
+        -H 'Content-Type: application/json'
+        -d '{"phoneNumber": "demo",
+             "token": "eyJhbGciOiJIUzUxMiJ9.eyJkZXZpY2VJZCI6ImRlbW8ifQ.Spoh4wsUP4SkDoai2f-TaLDtNFVKcRlO50OlKk8BNA48ebVwmg06xAMfTampUIWVQ2liVrUHgXflIzr9x1Jw_A",
+             "msg": "get auth code",
+             "app": "xuexiqiangguo"}'
+        $url_root/sms/app-latest
+)
+
+EOF
+
+"${index_cmd[@]}"
+#"${token_cmd_post[@]}"
+#"${sms_cmd_post[@]}"
+#"${sms_cmd_get[@]}"

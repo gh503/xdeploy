@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+# mCurrentFocus=Window{534d851 u12 com.tencent.mobileqq/com.tencent.mobileqq.activity.SplashActivity}                                             
+# mFocusedApp=AppWindowToken{4e05191 token=Token{4b9719e ActivityRecord{52dd079 u12 com.tencent.mobileqq/.activity.SplashActivity t1200100}}}
+# displayId=0
+# mWallpaperTarget=null
+adb shell dumpsys window displays

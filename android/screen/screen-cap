@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+output=$1
+[ -n "$output" ] || exit 1
+
+adb shell screencap -p -d 0 > $output

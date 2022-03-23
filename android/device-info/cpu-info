@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+Processor=$(adb shell cat /proc/cpuinfo | grep Processor | cut -d: -f2)
+processor=$(adb shell cat /proc/cpuinfo | grep processor | wc -l)
+hardware=$(adb shell cat /proc/cpuinfo | grep Hardware | cut -d: -f2)
+
+echo "hardware: $hardware"
+echo "processor arch: $Processor"
+echo "processor number: $processor"

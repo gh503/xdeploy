@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+adb shell dumpsys activity activities | grep mResumedActivity | awk '{print $4}'

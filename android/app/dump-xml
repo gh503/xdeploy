@@ -1,0 +1,7 @@
+#!/bin/bash
+
+dst_file=$HOME/app_window_dump.xml
+
+adb shell uiautomator dump
+adb pull /sdcard/window_dump.xml $dst_file
+uos-browser $dst_file

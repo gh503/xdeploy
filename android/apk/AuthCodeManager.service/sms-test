@@ -1,0 +1,29 @@
+#!/bin/sh
+
+
+port=$1
+token="$2"
+sms="$3"
+
+ip=$(ip route get 1.2.3.4 | awk '{print $7;exit 0}')
+
+[ -n "$port" ] || exit 1
+[ -n "$ip" ] || exit 2
+[ -n "$token" ] || exit 3
+[ -n "$sms" ] || exit 4
+
+url_root="http://$ip:$port"
+
+new_sms_cmd=(
+        curl
+        -X POST
+        -H 'Content-Type: application/json'
+        -d "{\"phoneNumber\": \"demo\",
+             \"token\": \"$token\",
+             \"msg\": \"new sms\",
+             \"sms\": \"$sms\"}"
+        $url_root/sms/new
+)
+
+"${new_sms_cmd[@]}"
+echo

@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+activity=$1
+[ -n "$activity" ] || exit 1
+
+adb shell am start -n $activity

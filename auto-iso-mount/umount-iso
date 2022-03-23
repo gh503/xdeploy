@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+. iso-map
+
+for key in ${!OS_MAP[@]}
+do
+    sudo umount ${OS_MAP[$key]}
+done
+
+lsblk | grep $OS_MAIN

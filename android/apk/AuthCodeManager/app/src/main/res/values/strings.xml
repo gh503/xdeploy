@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">AuthCodeManager</string>
+    <string name="button_run_show">Run</string>
+    <string name="button_log_show">Journal</string>
+    <string name="button_clear_show">Clear</string>
+    <string name="button_stop_show">Stop</string>
+    <string name="button_language_show">Language</string>
+    <string name="button_set">Setting</string>
+    <string name="vtext_username">Username</string>
+    <string name="vtext_passwd">Password</string>
+    <string name="vtext_server">HttpUrl</string>
+    <string name="vtext_phone">Phone</string>
+    <string name="vtext_token">Token</string>
+    <string name="etext_username">Input Username</string>
+    <string name="etext_passwd">Input Password</string>
+    <string name="etext_server">Input Http Server Url</string>
+    <string name="vtext_token_got">Authoried Token</string>
+    <string name="etext_phone_number">Phone Number</string>
+    <string name="button_test_show">Test</string>
+    <string name="vtext_description">请配置授权用户、密码、服务地址(http://x.x.x.x:port)，完成后点击测试Test查看获取到授权码Token后即可正常使用。其中手机号、授权码应可以自动获取，且授权码不能更改。本页面配置会自动保存。受安卓变更影响，可能需要点击测试2次生效。</string>
+    <string name="vtext_version">Ver 1.0</string>
+</resources>

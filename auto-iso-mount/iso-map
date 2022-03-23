@@ -1,0 +1,94 @@
+#!/bin/bash
+
+SERVER=90.90.0.1
+RH_TEMPLATE=template-redhat.cfg
+DB_TEMPLATE=template-debian.cfg
+SQUASHFS=filesystem.squashfs
+OS_MAIN=/var/www/html/os
+AI_MAIN=/var/www/html/autoinstall
+IMAGE_MAIN=/var/lib/tftpboot/image
+ISO=(
+    desktop/debian-live-10.9.0-amd64-gnome.iso
+    desktop/deepin-desktop-community-20.2.1-amd64.iso
+    desktop/ubuntu-18.04.5-desktop-amd64.iso
+    desktop/ubuntu-20.10-desktop-amd64.iso
+
+    server/CentOS-7-aarch64-Everything-2009.iso
+    server/CentOS-7-x86_64-Everything-2009.iso
+    server/ubuntu-18.04.5-live-server-amd64.iso
+    server/ubuntu-20.10-live-server-amd64.iso
+)
+
+# ============================== 以上为配置 ================================== #
+declare -A OS_MAP AI_MAP IMAGE_MAP BRAND_MAP BOOT_MAP
+
+function getMinLenItem() {
+    len=10000 ; res=""
+    for item in "$@"
+    do
+        test_len=${#item}
+        [ $len -gt $test_len ] && {
+            len=$test_len
+            res=$item
+        }
+    done
+    echo ${res#*./}
+}
+
+for index in ${!ISO[@]}
+do
+    key=${ISO[$index]}
+    type=$(echo $key | cut -d/ -f1)
+    iso=$(echo $key | cut -d/ -f2)
+    os_layout=${type}-${iso%.iso}
+    value1=$OS_MAIN/$os_layout
+    value2=$AI_MAIN/$os_layout.cfg
+    value3=$IMAGE_MAIN/$os_layout
+    if [ -n "$(echo $key | grep -iE 'debian|ubuntu|kylin|deepin')" ] ;then
+        value4=debian
+    elif [ -n "$(echo $key | grep -iE 'redhat|centos|fedora')" ] ;then
+        value4=redhat
+    else
+        echo "unsupported os brand: $key!"
+        continue
+    fi
+    OS_MAP["$key"]="$value1"
+    AI_MAP["$key"]="$value2"
+    IMAGE_MAP["$key"]="$value3"
+    BRAND_MAP["$key"]="$value4"
+done
+
+for key in ${!IMAGE_MAP[@]}
+do
+    value=${IMAGE_MAP[$key]}
+    base_path=$OS_MAIN/${value##*/}
+    VMLINUZ=$(cd $base_path
+        for a in vmlinuz vmlinuz-linux
+        do
+            find . -type f -name $a
+        done
+    )
+    [ -n "$VMLINUZ" ] || continue
+    INITRD=$(cd $base_path
+        for b in initrd initrd.lz initrd.gz initrd.img initramfs-linux initramfs.img
+        do
+            find . -type f -name $b
+        done
+    )
+    vmlinuz=$(getMinLenItem ${VMLINUZ[@]})
+    initrd=$(getMinLenItem ${INITRD[@]})
+    layout=$(dirname $vmlinuz)
+    BOOT_MAP["$key"]="$layout $(basename $vmlinuz),$(basename $initrd)"
+done
+
+for index in ${!ISO[@]}
+do
+    key=${ISO[$index]}
+    printf "%s:\n" "$key"
+    printf "\tbrand: %s\n" "${BRAND_MAP["$key"]}"
+    printf "\tsrc: %s\n" "${OS_MAP[$key]}"
+    printf "\tks/d-i: %s\n" "${AI_MAP[$key]}"
+    printf "\timage: %s\n" "${IMAGE_MAP[$key]}"
+    printf "\tboot-image: %s\n" "${BOOT_MAP["$key"]}"
+    echo
+done

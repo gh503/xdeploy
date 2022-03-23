@@ -1,0 +1,10 @@
+#/bin/bash
+set -e
+
+for nic in $(./get-nic)
+do
+        line=$(adb shell ip link | sed -n "/$nic: /=")
+        line=$((line + 1))
+        mac=$(adb shell ip link | sed -n "${line}p" | grep 'link/ether' | awk '{print $2; exit}')
+        echo "$nic $mac"
+done

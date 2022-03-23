@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#333333"
+    tools:context=".SettingsActivity">
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:autofillHints=""
+        android:background="#444444"
+        android:ems="10"
+        android:hint="@string/etext_passwd"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/editTextUsername"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
+
+    <TextView
+        android:id="@+id/textViewServer"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="#444444"
+        android:hint="@string/vtext_server"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textViewPassword"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPassword" />
+
+    <EditText
+        android:id="@+id/editTextServer"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:autofillHints=""
+        android:background="#444444"
+        android:ems="10"
+        android:hint="@string/etext_server"
+        android:inputType="textUri"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <TextView
+        android:id="@+id/textViewPassword"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="#444444"
+        android:hint="@string/vtext_passwd"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textViewUsername"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsername" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:autofillHints=""
+        android:background="#444444"
+        android:ems="10"
+        android:hint="@string/etext_username"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewUsername"
+        app:layout_constraintTop_toTopOf="@+id/textViewUsername" />
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:autofillHints=""
+        android:background="#444444"
+        android:ems="10"
+        android:hint="@string/etext_phone_number"
+        android:inputType="phone"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/editTextServer"
+        app:layout_constraintTop_toBottomOf="@+id/editTextServer" />
+
+    <TextView
+        android:id="@+id/textViewToken"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="#444444"
+        android:hint="@string/vtext_token"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textViewPhone"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPhone" />
+
+    <TextView
+        android:id="@+id/textViewTokenValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="#444444"
+        android:hint="@string/vtext_token_got"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/editTextPhone"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+
+    <TextView
+        android:id="@+id/textViewPhone"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="#444444"
+        android:hint="@string/vtext_phone"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textViewServer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewServer" />
+
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="#444444"
+        android:hint="@string/vtext_username"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/editTextUsername"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:hint="@string/vtext_description"
+        android:textColor="#FFFFFF"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonTest"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="48dp"
+        android:background="#444444"
+        android:hint="@string/button_test_show"
+        android:onClick="Test"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:backgroundTint="#444444"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTokenValue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">验证码管理器</string>
+    <string name="button_run_show">运行服务</string>
+    <string name="button_log_show">查看日志</string>
+    <string name="button_clear_show">清空日志</string>
+    <string name="button_stop_show">停止服务</string>
+    <string name="button_language_show">切换语言</string>
+    <string name="button_set">设置</string>
+    <string name="vtext_username">用户名</string>
+    <string name="vtext_passwd">密码</string>
+    <string name="vtext_server">服务地址</string>
+    <string name="vtext_phone">手机号</string>
+    <string name="vtext_token">认证码</string>
+    <string name="etext_username">请输入用户名</string>
+    <string name="etext_passwd">请输入密码</string>
+    <string name="etext_server">请输入服务器地址</string>
+    <string name="vtext_token_got">有效授权码</string>
+    <string name="etext_phone_number">本机手机号</string>
+    <string name="button_test_show">测试</string>
+    <string name="vtext_description">请配置授权用户、密码、服务地址(http://x.x.x.x:port)，完成后点击测试Test查看获取到授权码Token后即可正常使用。其中手机号、授权码应可以自动获取，且授权码不能更改。本页面配置会自动保存。受安卓变更影响，可能需要点击测试2次生效。</string>
+    <string name="vtext_version">Ver 1.0</string>
+</resources>

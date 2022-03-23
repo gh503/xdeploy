@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# pip3 freeze > requirements.txt # 一键生成
+pip3 install -r requirements.txt # 一键安装

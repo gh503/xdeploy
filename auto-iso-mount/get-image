@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+. iso-map
+
+for key in ${!IMAGE_MAP[@]}
+do
+    rela_path=$(echo ${BOOT_MAP[$key]} | awk '{print $1;exit}')
+    files=$(echo ${BOOT_MAP[$key]} | awk '{print $2;exit}')
+    target_path=${IMAGE_MAP[$key]}/$rela_path
+    source_path=$OS_MAIN/${IMAGE_MAP[$key]##*/}/$rela_path
+
+    mkdir -p $target_path
+    for f in $(echo $files | sed 's/,/ /g')
+    do
+        cp -p $source_path/$f $target_path/
+    done
+done

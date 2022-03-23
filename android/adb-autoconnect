@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# https://github.com/Genymobile/scrcpy
+
+#trap 'exit && echo' SIGINT
+#while :
+#do
+        new_phone=(
+                scrcpy
+                --always-on-top # 总是置顶
+                #--fullscreen # 连接全屏
+                #--no-control # 仅显示不能控制
+                #-r andriodphone.mp4 #录制屏幕，Ctrl-C退出保存
+                #--no-display # used with -r
+                --turn-screen-off # 将手机屏幕关闭
+                --stay-awake # 保持手机屏幕唤醒，和 --turn-screen-off 一起用避免自动休眠
+                #--crop 1080:1800:0:0 # 指定显示手机区域，默认显示手机全屏
+                #--bit-rate=2M
+                #--window-title='andriod-phone'
+                #--window-borderless # similar to your physical phone, cannot move position
+                --rotation=0 # 1, 2, 3 rotation 90 degrees step by one
+                --render-expired-frames
+                --show-touches # show touches on physical phone
+                --no-key-repeat # disable repeated key events
+                --shortcut-mod=lctrl,lsuper
+        )
+
+        for dev in $(adb devices | grep -w device | awk '{print $1}' | sed ':a;N;s/\n/ /g;ba')
+        do
+                new_phone+=("--serial=$dev")
+                ps -efww | grep -v grep | grep -wq -- "-s $dev" ||
+                "${new_phone[@]}" &
+                sleep 5
+        done
+#        sleep 1
+#done
+

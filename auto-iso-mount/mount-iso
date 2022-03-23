@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+. iso-map
+
+for key in ${!OS_MAP[@]}
+do
+    value=${OS_MAP[$key]}
+    mkdir -p $value
+    sudo mount -o loop $key $value
+done
+echo
+lsblk | grep $OS_MAIN

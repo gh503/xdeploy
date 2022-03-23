@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+. iso-map
+
+for key in ${!AI_MAP[@]}
+do
+    value=${AI_MAP[$key]}
+    os_layout=$(basename ${value%.cfg})
+    brand=${BRAND_MAP[$key]}
+    if [ "$brand" == 'redhat' ] ;then
+        rsync $AI_MAIN/$RH_TEMPLATE $value
+    elif [ "$brand" == 'debian' ] ;then
+        rsync $AI_MAIN/$DB_TEMPLATE $value
+        (
+        cd $OS_MAIN/$os_layout
+        squashfs=$(find . -name $SQUASHFS)
+        if [ -n "$squashfs" ] ;then
+            sed -i "s#FILESYSTEM#${squashfs#*./}#g" $value
+        else
+            echo "find no $squashfs under $(pwd)!Skip!"
+            continue
+        fi
+        )
+    else
+        echo "unsupported os brand!"
+        continue
+    fi
+    sed -i "s/HTTP_SERVER/$SERVER/g" $value
+    sed -i "s/OS_LAYOUT/$os_layout/g" $value
+done
+
+ls -l $AI_MAIN

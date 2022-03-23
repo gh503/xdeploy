@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+adb shell settings get secure android_id
