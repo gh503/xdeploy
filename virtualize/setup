@@ -4,7 +4,7 @@ if uname -r | grep -i -q 'wsl' ;then
     echo "Windows WSL kernel detected!"
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo bash get-docker.sh
-    sudo service docker start
+    sudo service docker start && rm get-docker.sh
 else
     sudo apt install -y docker.io
     sudo systemctl start docker.io
