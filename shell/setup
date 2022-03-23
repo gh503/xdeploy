@@ -7,7 +7,7 @@ if command -v zsh > /dev/null ;then
     chsh -s $(which zsh)
 fi
 
-cp -r .shell .??* ~
+cp -r bin .shell .??* ~
 
 # git shell
 [ -f '/etc/apt/sources.list.d/github-cli.list' ] || {
