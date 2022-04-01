@@ -1,10 +1,3 @@
-" VIM 基础配置
-source $HOME/.vim/config/basic.vim
-" 快捷键
-source $HOME/.vim/config/map.vim
-" 配色
-source $HOME/.vim/config/color.vim
-
 " VIM 插件管理器
 call plug#begin('~/.vim/plugged')
 
@@ -18,3 +11,10 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'tomasr/molokai'
 
 call plug#end()
+
+" 快捷键
+source $HOME/.vim/config/map.vim
+" 配色
+source $HOME/.vim/config/color.vim
+" VIM 基础配置
+source $HOME/.vim/config/basic.vim
