@@ -5,16 +5,21 @@
 os_name=$(. /etc/os-release && echo $NAME)
 os_version=$(. /etc/os-release && echo $VERSION)
 os_arch=$(uname -i)
+os_kernel=$(uname -r)
 
 # https://zhuanlan.zhihu.com/p/269782783
 info=$(lscpu)
 hw_arch=$(uname -m)
-hw_cpu_name=$(echo "$info" | grep 'Model name' | cut -d: -f2)
-hw_cpu_socket=$(echo "$info" | grep 'Socket(s)' | cut -d: -f2)
-hw_cpu_per_socket=$(echo "$info" | grep 'Core(s) per socket' | cut -d: -f2)
-hw_thread_per_cpu=$(echo "$info" | grep 'Thread(s) per core' | cut -d: -f2)
+hw_cpu_name=$(trim $(echo "$info" | grep 'Model name' | cut -d: -f2))
+hw_cpu_socket=$(trim $(echo "$info" | grep 'Socket(s)' | cut -d: -f2))
+hw_cpu_per_socket=$(trim $(echo "$info" | grep 'Core(s) per socket' | cut -d: -f2))
+hw_thread_per_cpu=$(trim $(echo "$info" | grep 'Thread(s) per core' | cut -d: -f2))
 hw_thread_total=$((hw_cpu_socket * hw_cpu_per_socket * hw_thread_per_cpu))
 
+shell=$(echo ${SHELL##*/})
+
 trim "System Info:"
+trim "Shell: $(printG $shell)"
 trim "OS: $(printG "$os_name $os_version $os_arch")"
+trim "Kernel: $(printG $os_kernel)"
 trim "CPU: $(printG "${hw_cpu_name[@]} | ${hw_arch} | ${hw_thread_total}cores(${hw_cpu_socket}s*${hw_cpu_per_socket}p*${hw_thread_per_cpu}thread)")"
