@@ -1,20 +1,29 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+  :exe '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+              \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  au VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 " VIM 插件管理器
 call plug#begin('~/.vim/plugged')
 
-Plug 'neoclide/coc.nvim',{'branch':'release'} " 代码补全
+Plug 'preservim/nerdtree'                     " 文件浏览器
 Plug 'yianwillis/vimcdoc'                     " 中文帮助文档
-Plug 'chxuan/change-colorscheme'              " 切换主题
+
+Plug 'neoclide/coc.nvim',{'branch':'release'} " 代码补全
+Plug 'honza/vim-snippets'                     " 代码块
 
 " 配色主题
+Plug 'chxuan/change-colorscheme'              " 切换主题
+Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
-Plug 'tomasr/molokai'
 
 call plug#end()
 
 " 快捷键
 source $HOME/.vim/config/map.vim
-" 配色
-source $HOME/.vim/config/color.vim
 " VIM 基础配置
 source $HOME/.vim/config/basic.vim
+" 配色
+source $HOME/.vim/config/color.vim

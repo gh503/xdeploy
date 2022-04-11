@@ -3,21 +3,31 @@
 " ============================================================================================ "
 set encoding=utf-8                  " 设置编码方式
 set fileencodings=utf-8,gbk         " 自动判断编码时，依次尝试编码
+set ambiwidth=double                " 双 宽显示
+
+filetype on                         " 开启文件类型检查，并载入该类型对应的缩进规则(如.py文件加载，$HOME/.vim/intent/python.vim)
+filetype indent on                  " 这里使用统一缩进
+filetype plugin on                  " 允许插件
+filetype plugin indent on           " 启动智能补全(ctrl-p)
+
 set helplang=cn                     " 中文帮助文档
 set ff=unix                         " 设置文件格式unix
 set nocompatible                    " 不与vi兼容，使用vim自己的命令
-set mouse=a                         " 支持鼠标
-
+set mouse=a                         " 所有模式下支持鼠标
+set notimeout                       " 命令下发后时延
 
 syntax enable                       " 语法高亮
 syntax on
-set t_Co=256                        " 启用256色
 
 set number                          " 显示行号
 set relativenumber                  " 显示光标所在当前行号，其他行相对于该行的行号
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 set cursorline                      " 突出显示当前行
-set cursorlineopt=number,screenline
 set cursorcolumn                    " 突出显示当前列
 set showmatch                       " 显示括号匹配
 set hlsearch                        " 高亮显示搜索结果
@@ -25,7 +35,7 @@ set hlsearch                        " 高亮显示搜索结果
 set list                            " 显示不可见字符，并定制行尾空格、tab键显示符号
 set listchars=tab:>-,trail:-,precedes:«,extends:»
 
-set textwidth=128                   " 设置行宽
+set textwidth=132                   " 设置行宽
 set wrap                            " 设置自动换行（单行字符超过行宽）
 set linebreak                       " 设置遇到指定字符换行
 set iskeyword+=_,$,@,%,#,-          " 遇到指定字符不换行
@@ -37,35 +47,21 @@ set fillchars=vert:\ ,stl:\ ,stlnc:\ " 分割窗口间显示空白
 
 set showtabline=2                   " 显示标签栏
 set tabpagemax=15                   " 同时打开的标签页
-hi tablinefill ctermfg=LightGreen ctermbg=DarkGreen
-hi tabline ctermfg=Blue ctermbg=Yellow
-hi tablinesel ctermfg=Red ctermbg=Yellow
 
-set laststatus=2                    " 显示状态栏
+set cmdheight=3                     " 命令行高度
 set showcmd                         " 状态栏显示正在输入的命令
+
 set ruler                           " 状态栏显示光标行列位置
 set showmode                        " 底部显示当前模式
-set statusline=%#FN#\%<%.50F\                 "显示文件名和文件路径
+set laststatus=2                    " 总是显示状态栏
+set statusline=%#FN#[\%<%.50F\]               "显示文件名和文件路径
 set statusline+=%=%#FT#\%y%m%r%h%w\ %*        "显示文件类型及文件状态
 set statusline+=%#FF#\%{&ff}\[%{&fenc}]\ %*   "显示文件编码类型
 set statusline+=%#RC#\ row:%l/%L,col:%c\ %*   "显示光标所在行和列
-set statusline+=%#FP#\%3p%%\%*                "显示光标前文本所占总文本的比例
-hi FN cterm=none ctermfg=25 ctermbg=0
-hi FT cterm=none ctermfg=208 ctermbg=0
-hi FF cterm=none ctermfg=169 ctermbg=0
-hi RC cterm=none ctermfg=100 ctermbg=0
-hi FP cterm=none ctermfg=green ctermbg=0
-
-hi Normal ctermfg=252 ctermbg=none  " 背景透明
-
+set statusline+=%#FP#[\%3p%%\]%*              "显示光标前文本所占总文本的比例
 
 set nospell
 set spelllang=en_us,cjk             " 英中日韩单词拼写检查
-
-filetype on                         " 开启文件类型检查，并载入该类型对应的缩进规则(如.py文件加载，$HOME/.vim/intent/python.vim)
-filetype indent on                  " 这里使用统一缩进
-filetype plugin on                  " 允许插件
-filetype plugin indent on           " 启动智能补全(ctrl-p)
 
 set autoindent                      " 回车自动同上行缩进
 set tabstop=4                       " Tab缩进空格数
@@ -79,7 +75,8 @@ set incsearch                       " 搜索模式时，每输入一个字符自
 set ignorecase                      " 搜索时忽略大小写
 set smartcase                       " 配合ignorecase，只对第1个字母大小写敏感。搜Test不匹配test，但搜test匹配Test
 
-set history=10                      " 设置历史记录条数
+set history=66                      " 设置历史记录条数
+set updatetime=300                  " 等待300ms后无输入将交换文件写入磁盘
 set nobackup                        " 取消备份
 set noswapfile                      " 禁止临时文件生成
 
@@ -90,9 +87,7 @@ set autoread                        " 编辑时文件发生外部变更，给出
 set wildmenu                        " 命令模式下，底部操作指令按Tab补全，第1次按显示所有匹配指令清单，第2次按以次选择各指令
 set wildmode=longest:list,full
 
-
-
 set foldenable
-set foldmethod=manual
+set foldmethod=indent
 
-set clipboard+=unnamed              " y,p操作与系统粘贴板共享。配合vimx使用(安装vim-X11)
+set clipboard+=unnamed              " y,p操作与系统粘贴板共享。配合vimx使用(安装vim-gtk)

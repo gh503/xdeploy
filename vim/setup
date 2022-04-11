@@ -55,7 +55,7 @@ sudo apt install -y ruby-full
 gem sources -r https://rubygems.org/ -a https://gems.ruby-china.com/
 gem sources -u
 gem sources -l
-sudo gem install mdless
+sudo gem install mdless solargraph
 
 
 # tclsh
@@ -77,13 +77,32 @@ sudo apt install -y openjdk-17-jdk
 sudo apt install -y vim
 cp -r .vim ~
 
-vim -e -c "PlugInstall"
-vim -e -c "CocInstall coc-marketplace coc-pairs coc-highlight coc-sh coc-clangd coc-cmake coc-java coc-pyright coc-solargraph coc-json coc-css coc-html"
+vim -c "PlugInstall --sync | qa"
+coc_extensions=(
+    coc-cl
+    coc-clangd
+    coc-cmake
+    coc-css
+    coc-docker
+    coc-go
+    coc-highlight
+    coc-html
+    coc-java
+    coc-json
+    coc-markdownlint
+    coc-marketplace
+    coc-pairs
+    coc-pyright
+    coc-sh
+    coc-snippets
+    coc-solargraph
+    coc-tsserver
+    coc-vetur
+    coc-vimlsp
+)
+vim -c "CocInstall ${coc_extensions[@]} --sync | qa"
+
 cat > $HOME/.vim/coc-settings.json <<'EOF'
 {
-    "python.pythonPath": "/usr/bin/python",
-    "python.linting.pylintEnabled": false,
-    "python.linting.pep8Enabled": true,
-    "python.linting.enabled": false
 }
 EOF
