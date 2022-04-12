@@ -21,6 +21,8 @@ vmap <C-p> "+p                      " 粘贴
 
 " 重命名
 nmap <leader>rn <Plug>(coc-rename)
+" 当前分屏最大化
+nmap <leader>z :call Zoom()<CR>
 
 
 " TAB 自动补全
@@ -65,4 +67,20 @@ function! s:show_documentation()
   else
     execute '!' . &keywordprg . " " . expand('<cword>')
   endif
+endfunction
+
+function! Zoom ()
+    " check if is the zoomed state (tabnumber > 1 && window == 1)
+    if tabpagenr('$') > 1 && tabpagewinnr(tabpagenr(), '$') == 1
+        let l:cur_winview = winsaveview()
+        let l:cur_bufname = bufname('')
+        tabclose
+
+        " restore the view
+        if l:cur_bufname == bufname('')
+            call winrestview(cur_winview)
+        endif
+    else
+        tab split
+    endif
 endfunction
