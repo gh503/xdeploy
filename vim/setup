@@ -74,7 +74,7 @@ sudo apt install -y openjdk-17-jdk
 
 
 # vim
-sudo apt install -y vim
+sudo apt install -y vim xclip
 cp -r .vim ~
 
 vim -c "PlugInstall --sync | qa"
