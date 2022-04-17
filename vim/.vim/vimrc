@@ -9,14 +9,15 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdtree'                     " 文件浏览器
 Plug 'yianwillis/vimcdoc'                     " 中文帮助文档
+Plug 'voldikss/vim-translator'                " 翻译
 
 Plug 'neoclide/coc.nvim',{'branch':'release'} " 代码补全
 Plug 'honza/vim-snippets'                     " 代码块
 
-" 配色主题
+" 主题
+Plug 'vim-airline/vim-airline'
 Plug 'chxuan/change-colorscheme'              " 切换主题
 Plug 'tomasr/molokai'
-Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
@@ -27,3 +28,8 @@ source $HOME/.vim/config/map.vim
 source $HOME/.vim/config/basic.vim
 " 配色
 source $HOME/.vim/config/color.vim
+
+" Translator
+let g:translator_target_lang = 'zh'
+let g:translator_source_lang = 'auto'
+let g:translator_default_engines = ['bing', 'haici', 'youdao']

@@ -1,9 +1,36 @@
-let g:mapleader="\<SPACE>"
+let g:mapleader=" "
+
+map s <nop>  " s 不做动作
+map S :w<CR>
+map Q :q<CR>
+map R :source $MYVIMRC<CR>
+noremap = nzz
+noremap - Nzz
+noremap <LEADER><CR> :nohlsearch<CR>
+
+map sl :set splitright<CR>:vsplit<CR>
+map sh :set nosplitright<CR>:vsplit<CR>
+map sj :set splitbelow<CR>:split<CR>
+map sk :set nosplitbelow<CR>:split<CR>
+map <LEADER>h <C-w>h
+map <LEADER>l <C-w>l
+map <LEADER>j <C-w>j
+map <LEADER>k <C-w>k
+map <up> :resize +3<CR>
+map <down> :resize -3<CR>
+map <left> :vertical resize -3<CR>
+map <right> :vertical resize +3<CR>
+map sv <C-w>t<C-w>H  " 转竖直分屏
+map sh <C-w>t<C-w>K  " 转水平分屏
+
+map te :tabe<CR>                   " 新建标签
+map tj :+tabnext<CR>               " 下一个标签
+map tk :-tabnext<CR>               " 上一个标签
+map <TAB> :bn<CR>                  " Tab切换下一个文件
+map <S-TAB> :bp<CR>                " Shift+Tab切换上一个文件
 
 nmap <LEADER>e :NERDTreeToggle<CR>  " 文件浏览器"
-
-nmap <TAB> :bn<CR>                  " Tab切换下一个文件
-nmap <S-TAB> :bp<CR>                " Shift+Tab切换上一个文件
+nmap sc :set spell!<CR>           " 拼写检查
 
 nmap <F8> :PreviousColorScheme<CR>     " 切换上个主题
 imap <F8> <ESC> :PreviousColorScheme<CR>
@@ -12,7 +39,6 @@ imap <F7> <ESC> :NextColorScheme<CR>
 nmap <F6> :%retab!<CR>              " Tab<->空格
 nmap <F5> :set hlsearch!<CR>        " 搜索高亮
 nmap <F4> :set cursorcolumn!<CR>    " 列显示突出
-nmap <F3> :set spell!<CR>           " 拼写检查
 nmap <F2> :call ProgramRun() <CR>         " 执行脚本
 
 map <C-A> ggVGY                     " 全选并复制
@@ -23,7 +49,6 @@ vmap <C-p> "+p                      " 粘贴
 nmap <leader>rn <Plug>(coc-rename)
 " 当前分屏最大化
 nmap <leader>z :call Zoom()<CR>
-
 
 " TAB 自动补全
 inoremap <silent><expr> <TAB>

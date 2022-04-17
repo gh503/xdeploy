@@ -31,6 +31,12 @@ set cursorline                      " 突出显示当前行
 set cursorcolumn                    " 突出显示当前列
 set showmatch                       " 显示括号匹配
 set hlsearch                        " 高亮显示搜索结果
+exec "nohlsearch"
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+set laststatus=2                    " 总是显示状态栏
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif  " 自动定位到上次编辑的位置
 
 set list                            " 显示不可见字符，并定制行尾空格、tab键显示符号
 set listchars=tab:>-,trail:-,precedes:«,extends:»
@@ -53,12 +59,6 @@ set showcmd                         " 状态栏显示正在输入的命令
 
 set ruler                           " 状态栏显示光标行列位置
 set showmode                        " 底部显示当前模式
-set laststatus=2                    " 总是显示状态栏
-set statusline=%#FN#[\%<%.50F\]               "显示文件名和文件路径
-set statusline+=%=%#FT#\%y%m%r%h%w\ %*        "显示文件类型及文件状态
-set statusline+=%#FF#\%{&ff}\[%{&fenc}]\ %*   "显示文件编码类型
-set statusline+=%#RC#\ row:%l/%L,col:%c\ %*   "显示光标所在行和列
-set statusline+=%#FP#[\%3p%%\]%*              "显示光标前文本所占总文本的比例
 
 set nospell
 set spelllang=en_us,cjk             " 英中日韩单词拼写检查
@@ -87,7 +87,8 @@ set autoread                        " 编辑时文件发生外部变更，给出
 set wildmenu                        " 命令模式下，底部操作指令按Tab补全，第1次按显示所有匹配指令清单，第2次按以次选择各指令
 set wildmode=longest:list,full
 
-set foldenable
+set nofoldenable
+set foldlevel=99
 set foldmethod=indent
 
 set clipboard+=unnamed              " y,p操作与系统粘贴板共享。配合vimx使用(安装vim-gtk)
