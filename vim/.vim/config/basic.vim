@@ -32,9 +32,6 @@ set cursorcolumn                    " 突出显示当前列
 set showmatch                       " 显示括号匹配
 set hlsearch                        " 高亮显示搜索结果
 exec "nohlsearch"
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 set laststatus=2                    " 总是显示状态栏
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif  " 自动定位到上次编辑的位置
 

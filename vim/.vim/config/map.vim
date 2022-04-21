@@ -1,11 +1,13 @@
 let g:mapleader=" "
 
-map s <nop>  " s 不做动作
+" s 不做动作
+map s <nop>
 map S :w<CR>
 map Q :q<CR>
 map R :source $MYVIMRC<CR>
 noremap = nzz
 noremap - Nzz
+
 noremap <LEADER><CR> :nohlsearch<CR>
 
 map sl :set splitright<CR>:vsplit<CR>
@@ -20,33 +22,46 @@ map <up> :resize +3<CR>
 map <down> :resize -3<CR>
 map <left> :vertical resize -3<CR>
 map <right> :vertical resize +3<CR>
-map sv <C-w>t<C-w>H  " 转竖直分屏
-map sh <C-w>t<C-w>K  " 转水平分屏
+" 转竖直分屏
+map <LEADER>sv <C-w>t<C-w>H
+" 转水平分屏
+map <LEADER>sh <C-w>t<C-w>K
 
-map te :tabe<CR>                   " 新建标签
-map tj :+tabnext<CR>               " 下一个标签
-map tk :-tabnext<CR>               " 上一个标签
-map <TAB> :bn<CR>                  " Tab切换下一个文件
-map <S-TAB> :bp<CR>                " Shift+Tab切换上一个文件
+" 新建标签
+map <LEADER>te :tabe<CR>
+" 下一个标签
+map <LEADER>tj :+tabnext<CR>
+" 上一个标签
+map <LEADER>tk :-tabnext<CR>
+" Tab切换下一个文件
+map <TAB> :bn<CR>
+" Shift+Tab切换上一个文件
+map <S-TAB> :bp<CR>
 
-nmap <LEADER>e :NERDTreeToggle<CR>  " 文件浏览器"
-nmap sc :set spell!<CR>           " 拼写检查
+" 文件浏览器
+nmap <LEADER>tt :NERDTreeToggle<CR>
+" 拼写检查
+nmap <LEADER>sc :set spell!<CR>
 
-nmap <F8> :PreviousColorScheme<CR>     " 切换上个主题
-imap <F8> <ESC> :PreviousColorScheme<CR>
-nmap <F7> :NextColorScheme<CR>     " 切换下个主题
-imap <F7> <ESC> :NextColorScheme<CR>
-nmap <F6> :%retab!<CR>              " Tab<->空格
-nmap <F5> :set hlsearch!<CR>        " 搜索高亮
-nmap <F4> :set cursorcolumn!<CR>    " 列显示突出
-nmap <F2> :call ProgramRun() <CR>         " 执行脚本
+" 切换上个主题
+nmap <LEADER>cp :PreviousColorScheme<CR>
+" 切换下个主题
+nmap <LEADER>cn :NextColorScheme<CR>
+" Tab<->空格
+nmap <LEADER>rt :%retab!<CR>
+" 搜索高亮
+nmap <LEADER>hl :set hlsearch!<CR>
 
-map <C-A> ggVGY                     " 全选并复制
-vmap <C-c> "+y                      " 选中状态下复制
-vmap <C-p> "+p                      " 粘贴
+
+" 全选并复制
+map <C-A> ggVGY
+" 选中状态下复制
+vmap <C-c> "+y
+" 粘贴
+vmap <C-p> "+p
 
 " 重命名
-nmap <leader>rn <Plug>(coc-rename)
+nmap <LEADER>rn <Plug>(coc-rename)
 " 当前分屏最大化
 nmap <leader>z :call Zoom()<CR>
 
@@ -65,17 +80,6 @@ else
 endif
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-
-func ProgramRun()
-    if &filetype == "Python"
-        execute "!time python %; while true; do sleep 1; done"
-    elseif &filetype == "shell"
-        execute "!time bash %; while true; do sleep 1; done"
-    elseif &filetype == "Ruby"
-        execute "!time ruby %; while true; do sleep 1; done"
-    endif
-endfunc
 
 " 保留tab缩进功能
 function! s:check_back_space() abort

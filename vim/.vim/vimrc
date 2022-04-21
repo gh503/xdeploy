@@ -7,16 +7,24 @@ endif
 " VIM 插件管理器
 call plug#begin('~/.vim/plugged')
 
-Plug 'preservim/nerdtree'                     " 文件浏览器
-Plug 'yianwillis/vimcdoc'                     " 中文帮助文档
-Plug 'voldikss/vim-translator'                " 翻译
+" 终端配置: https://github.com/voldikss/vim-floaterm
+Plug 'voldikss/vim-floaterm'
 
-Plug 'neoclide/coc.nvim',{'branch':'release'} " 代码补全
-Plug 'honza/vim-snippets'                     " 代码块
+" 文件浏览器
+Plug 'preservim/nerdtree'
+" 中文帮助文档
+Plug 'yianwillis/vimcdoc'
+" 翻译
+Plug 'voldikss/vim-translator'
+" 代码补全
+Plug 'neoclide/coc.nvim',{'branch':'release'}
+" 代码块
+Plug 'honza/vim-snippets'
 
-" 主题
+" 状态栏
 Plug 'vim-airline/vim-airline'
-Plug 'chxuan/change-colorscheme'              " 切换主题
+" 切换主题
+Plug 'chxuan/change-colorscheme'
 Plug 'tomasr/molokai'
 Plug 'altercation/vim-colors-solarized'
 
