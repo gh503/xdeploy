@@ -19,7 +19,7 @@ hw_thread_total=$((hw_cpu_socket * hw_cpu_per_socket * hw_thread_per_cpu))
 shell=$(echo ${SHELL##*/})
 
 trim "System Info:"
-trim "Shell: $(printG $shell)"
 trim "OS: $(printG "$os_name $os_version $os_arch")"
-trim "Kernel: $(printG $os_kernel)"
 trim "CPU: $(printG "${hw_cpu_name[@]} | ${hw_arch} | ${hw_thread_total}cores(${hw_cpu_socket}s*${hw_cpu_per_socket}p*${hw_thread_per_cpu}thread)")"
+trim "Kernel: $(printG $os_kernel)"
+trim "Shell: $(printG $shell)"

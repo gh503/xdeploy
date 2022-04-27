@@ -3,7 +3,7 @@
 . colors
 
 tdate() {
-    date +'%Y/%m/%d %H:%M:%S.%s'
+    date +'%Y/%m/%d %H:%M:%S.%6N'
 }
 
 trim() {
@@ -87,6 +87,4 @@ tlog() {
         [ -f "$logfile" ] || :> $logfile
         eval "$level $string" >> $logfile
     fi
-
-    return 0
 }
