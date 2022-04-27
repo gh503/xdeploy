@@ -1,19 +1,15 @@
 let g:mapleader=" "
 
-" s 不做动作
-map s <nop>
 map S :w<CR>
 map Q :q<CR>
 map R :source $MYVIMRC<CR>
-noremap = nzz
-noremap - Nzz
 
 noremap <LEADER><CR> :nohlsearch<CR>
 
-map sl :set splitright<CR>:vsplit<CR>
-map sh :set nosplitright<CR>:vsplit<CR>
-map sj :set splitbelow<CR>:split<CR>
-map sk :set nosplitbelow<CR>:split<CR>
+map <LEADER>sl :set splitright<CR>:vsplit<CR>
+map <LEADER>sh :set nosplitright<CR>:vsplit<CR>
+map <LEADER>sj :set splitbelow<CR>:split<CR>
+map <LEADER>sk :set nosplitbelow<CR>:split<CR>
 map <LEADER>h <C-w>h
 map <LEADER>l <C-w>l
 map <LEADER>j <C-w>j
@@ -39,7 +35,7 @@ map <TAB> :bn<CR>
 map <S-TAB> :bp<CR>
 
 " 文件浏览器
-nmap <LEADER>tt :NERDTreeToggle<CR>
+nmap <LEADER>e :NERDTreeToggle<CR>
 " 拼写检查
 nmap <LEADER>sc :set spell!<CR>
 
