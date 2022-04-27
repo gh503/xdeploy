@@ -33,11 +33,12 @@ alias make="make -j$nr_cpu"
 
 alias rsync="rsync -avzP -e 'ssh -q -o StrictHostKeyChecking=no'"
 alias ssh='ssh -q -o StrictHostKeyChecking=no'
-
-
 alias s=ssh
 
 alias u="uname -a"
+alias f="find"
+alias ff="find . -type f -name"
+alias fd="find . -type d -name"
 
 alias gu="git remote update" # && git checkout origin/master"
 alias gs="git show --format=fuller --stat --patch -w -M"
@@ -205,7 +206,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-
+alias ......='cd ../../../../..'
 
 alias md='mkdir -p'
 alias rd=rmdir
