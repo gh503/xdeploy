@@ -6,6 +6,7 @@ os_name=$(. /etc/os-release && echo $NAME)
 os_version=$(. /etc/os-release && echo $VERSION)
 os_arch=$(uname -i)
 os_kernel=$(uname -r)
+os_ip=$(ip route get 1.2.3.4 | awk '{print $7;exit}')
 
 # https://zhuanlan.zhihu.com/p/269782783
 info=$(lscpu)
@@ -18,8 +19,10 @@ hw_thread_total=$((hw_cpu_socket * hw_cpu_per_socket * hw_thread_per_cpu))
 
 shell=$(echo ${SHELL##*/})
 
-trim "System Info:"
-trim "OS: $(printG "$os_name $os_version $os_arch")"
-trim "CPU: $(printG "${hw_cpu_name[@]} | ${hw_arch} | ${hw_thread_total}cores(${hw_cpu_socket}s*${hw_cpu_per_socket}p*${hw_thread_per_cpu}thread)")"
-trim "Kernel: $(printG $os_kernel)"
+trim "hostname: $(printG $(hostname))"
+trim "username: $(printG $(whoami))"
 trim "Shell: $(printG $shell)"
+trim "IP: $(printG "${os_ip}")"
+trim "OS: $(printG "$os_name $os_version $os_arch")"
+trim "Kernel: $(printG $os_kernel)"
+trim "CPU: $(printG "${hw_cpu_name[@]} | ${hw_arch} | ${hw_thread_total}cores(${hw_cpu_socket}s*${hw_cpu_per_socket}p*${hw_thread_per_cpu}thread)")"
