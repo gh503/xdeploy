@@ -1,0 +1,95 @@
+#!/bin/bash
+
+export PATH=../../shell/bin/tlog:${PATH}
+. tlog
+
+if [ ${UID} -eq 0 ] ;then
+    SUDO=
+    current_user=root
+    current_home=/root
+else
+    SUDO=sudo
+    current_user=${USER}
+    current_home=${HOME}
+fi
+
+${SUDO} apt update
+${SUDO} apt install -y vsftpd db-util
+
+vsftpd_conf_file='/etc/vsftpd.conf'
+
+[ -f '/etc/vsftpd.conf.bak' ] || {
+    if [ -f "${vsftpd_conf_file}" ] ;then
+        ${SUDO} mv ${vsftpd_conf_file}{,.bak}
+    else
+        twarn "配置vsftpd服务失败!"
+        exit 1
+    fi
+}
+
+${SUDO} su - root bash -c "cat > ${vsftpd_conf_file} <<EOF
+# 使能ipv4
+listen=YES
+# 关闭ipv6
+listen_ipv6=NO
+# 禁止匿名用户
+anonymous_enable=NO
+# 不可登录用户列表
+userlist_enable=YES
+userlist_file=/etc/ftpusers
+# 本地用户登录使能
+local_enable=YES
+# 虚拟用户映射的本地用户
+guest_enable=YES
+# 防止本地FTP用户访问其归属目录之外的文件
+chroot_local_user=YES
+# 启动被动模式
+pasv_min_port=30000
+pasv_max_port=31000
+# 用户管理
+tcp_wrappers=YES
+# 用户配置目录
+user_config_dir=/etc/vsftpd/users
+# 用户认证授权
+pam_service_name=vsftp.vu
+# 用户时间
+use_localtime=YES
+EOF"
+
+tinfo "创建用户: 1 密码: 1"
+${SUDO} mkdir -p /etc/vsftpd/users
+${SUDO} su - root bash -c "echo -e '1\n1' > /etc/vsftpd/login.users"
+${SUDO} db_load -T -t hash -f /etc/vsftpd/login.users /etc/vsftpd/login.db
+${SUDO} chmod 600 /etc/vsftpd/login.db
+${SUDO} rm -f /etc/vsftpd/login.users
+
+${SUDO} su - root bash -c "cat > /etc/pam.d/vsftp.vu <<EOF
+auth    required    /pam_userdb.so      db=/etc/vsftpd/login
+account required    /pam_userdb.so      db=/etc/vsftpd/login
+EOF"
+
+mkdir -p ${current_home}/download
+${SUDO} su - root bash -c "cat > /etc/vsftpd/users/1 <<EOF
+# 映射本地用户
+guest_username=${current_user}
+# ftp工作目录
+local_root=${current_home}/download
+# 允许文件系统更改，例如上载和删除文件
+write_enable=YES
+EOF"
+
+if uname -r | grep -Eq 'microsoft|wsl' ;then
+    ${SUDO} service vsftpd restart
+    ${SUDO} service vsftpd status | grep -q 'is running' || {
+        terror "启动vsftpd服务失败!"
+        exit 2
+    }
+else
+    systemctl restart vsftpd
+    systemctl status vsftpd | grep -q 'active (running)' || {
+        terror "启动vsftpd服务失败!"
+        exit 2
+    }
+fi
+
+tinfo "启动vsftpd服务成功!"
