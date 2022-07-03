@@ -55,7 +55,7 @@ zstyle ':completion:*' completer _complete _list _oldlist _expand _ignored _matc
 #zstyle ':completion:*:approximate:*' max-errors 1 numeric
 ## allow one error for every three characters typed in approximate completer
 #  zstyle -e ':completion:*:approximate:*' max-errors \
-	#  'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+    #  'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
 
 ## Separate matches into groups
 zstyle ':completion:*:matches' group 'yes'
@@ -167,47 +167,47 @@ zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
 
 ## filename suffixes to ignore during completion (except after rm command)
 zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns \
-	'*?.(o|swp|bak|aux|old|pro|zwc|gcno|porigin)' '*~'
+    '*?.(o|swp|bak|aux|old|pro|zwc|gcno|porigin)' '*~'
 
 # zstyle ':completion:*:*:rm:*' file-patterns \
-# 	'*.swp:vim-swap-files:vim\ swap\ file {*~,*.bak}:backup-files:backup\ file' \
-# 	'%p(^/):normal-files %p(-/):directories:directory'
+#   '*.swp:vim-swap-files:vim\ swap\ file {*~,*.bak}:backup-files:backup\ file' \
+#   '%p(^/):normal-files %p(-/):directories:directory'
 
 # zstyle ':completion:*:*:rm:*' file-patterns \
-# 	'*.swp:vim-swap-files:vim\ swap\ file {*~,*.bak}:backup-files:backup\ file *.o:object-files:object\ file' \
-# 	'%p:all-files'
+#   '*.swp:vim-swap-files:vim\ swap\ file {*~,*.bak}:backup-files:backup\ file *.o:object-files:object\ file' \
+#   '%p:all-files'
 
 #zstyle ':completion:*:*:rm:option-recursive-1' file-patterns \
-#	'*(/):directories:directory'
+#   '*(/):directories:directory'
 
 ## feed only empty dirs to rmdir
 zstyle ':completion:*:rmdir:*' file-patterns '*(/^F):empty-dirs:empty\ dir' '*(/):directories:directory'
 
 ## feed binary files to objdump, nm
 zstyle ':completion:*:(objdump|nm):*' file-patterns \
-	'{*.o,*(*)}:object-files:object\ file *(/):directories:directory'
+    '{*.o,*(*)}:object-files:object\ file *(/):directories:directory'
 
 ## offer only normal files, if non exists, then consider dirs
 ## it's very convenient for me to have
 ## an alias 'e=vim' to activate the dir-ignoring mechanism,
 ## and fall back to the normal 'vi' when needed.
 # zstyle ':completion:*:(vim|gvim):*' file-patterns \
-# 	'%p(^/):files' '*(-/):directories:directories' '*:all-files'   
+#   '%p(^/):files' '*(-/):directories:directories' '*:all-files'   
 
 ## group normal files, then directories
  zstyle ':completion:*' file-patterns \
-	 '%p(^/):normal-files *(-/):directories:directory'
+     '%p(^/):normal-files *(-/):directories:directory'
 
 ## completions for some progs. not in default completion system
 
 zstyle ':completion:*:*:mpg123:*' file-patterns \
-	'*.(mp3|MP3):mp3-files:mp3\ file *(-/):directories:directory'
+    '*.(mp3|MP3):mp3-files:mp3\ file *(-/):directories:directory'
 
 zstyle ':completion:*:*:xmms:*' file-patterns \
-	'*.(mp3|MP3|ogg|OGG|ape|APE):music-files:music\ file *(-/):directories:directory'
+    '*.(mp3|MP3|ogg|OGG|ape|APE):music-files:music\ file *(-/):directories:directory'
 
 zstyle ':completion:*:*:(gimp|xv|feh):*' file-patterns \
-	'*.(jpg|JPG|jpe|jpeg|JPEG|png|PNG|gif|GIF|tif|TIF|tiff|TIFF|bmp|BMP|xpm):picture-files:picture\ file *(-/):directories:directory'
+    '*.(jpg|JPG|jpe|jpeg|JPEG|png|PNG|gif|GIF|tif|TIF|tiff|TIFF|bmp|BMP|xpm):picture-files:picture\ file *(-/):directories:directory'
 
 ## generic completions for programs which understand GNU long options(--help)
 compdef _gnu_generic slrnpull df du apt-file feh gimp
@@ -227,8 +227,8 @@ compdef _services start stop
 
 # type debian/rules <TAB> inside a source package:
 if [[ -f /etc/debian_version ]]; then
-	_debian_rules() { local words=(make -f debian/rules) _make }
-	compdef _debian_rules debian/rules
+    _debian_rules() { local words=(make -f debian/rules) _make }
+    compdef _debian_rules debian/rules
 fi
 
 #todo...
@@ -281,7 +281,7 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*:directories' ignored-patterns '/kbuild'
 
 zstyle ':completion:*:cd:*' tag-order \
-	local-directories directory-stack named-directories path-directories
+    local-directories directory-stack named-directories path-directories
 
 
 # zstyle ':completion:*:mplayer:*:bookmark' mplayer-bookmark $ZDOTDIR/mplayer-bookmark
@@ -297,17 +297,17 @@ zstyle ':completion:*:cd:*' tag-order \
 #  fi
 if [[ -e ~/.abook/addressbook && -x /usr/bin/perl ]]; then
 zstyle -e ':completion::complete:mutt:*:' users \
-	'reply=($(perl -ne '\''print "$1\n" 
-			if /^email=(\S+)$/;'\'' ~/.abook/addressbook) )'
+    'reply=($(perl -ne '\''print "$1\n" 
+            if /^email=(\S+)$/;'\'' ~/.abook/addressbook) )'
 fi
 
 ## common usernames
 #zstyle ':completion:*' users $users
 zstyle ':completion:*:*:*:users' ignored-patterns \
     adm apache backup bin daemon Debian-exim fetchmail games gdm gnats halt \
-	ident irc junkbust list lp mail mailnull man named news nfsnobody nobody \
-	nscd ntp operator pcap postgres proxy radvd rpc rpcuser rpm shutdown \
-	squid sshd sync sys uucp vcsa www-data xfs
+    ident irc junkbust list lp mail mailnull man named news nfsnobody nobody \
+    nscd ntp operator pcap postgres proxy radvd rpc rpcuser rpm shutdown \
+    squid sshd sync sys uucp vcsa www-data xfs
 
 ## common hostnames
 hosts=( `egrep -v '(ip6|localhost|^#|^$)' </etc/hosts` )

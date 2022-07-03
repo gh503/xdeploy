@@ -1,108 +1,125 @@
 #!/bin/bash
 
-# nodejs
-[ -d "/opt/node-v16.14.2-linux-x64" ] || {
-    wget -c https://npmmirror.com/mirrors/node/v16.14.2/node-v16.14.2-linux-x64.tar.xz &&
-    tar xf node-v16.14.2-linux-x64.tar.xz &&
-    sudo mv node-v16.14.2-linux-x64 /opt &&
-    sudo ln -sf /opt/node-v16.14.2-linux-x64/bin/node /usr/local/bin/node &&
-    sudo ln -sf /opt/node-v16.14.2-linux-x64/bin/npm  /usr/local/bin/npm &&
-    sudo ln -sf /opt/node-v16.14.2-linux-x64/bin/npx  /usr/local/bin/npx &&
-    rm -rf node-v16.14.2-linux-x64*
+if [ ${UID} -eq 0 ] ;then
+    SUDO=
+else
+    SUDO=sudo
+fi
+
+dep_debian_pkgs=(
+    wget
+    libncurses-dev
+    liblua5.1-0-dev lua5.1
+    libperl-dev
+    libpython2-dev python2-dev python2
+    libpython3-dev python3-dev python3 python3-pip ipython3
+    libruby ruby-dev ruby rubygems
+    openjdk-17-jdk
+    libssl-dev
+    tcl expect
+    xclip
+    git
+)
+${SUDO} apt install -y ${dep_debian_pkgs[@]}
+
+if command -v node > /dev/null ;then
+    node -v | grep -q v16.14.2 || {
+        wget -c --no-check-certificate --quiet https://npmmirror.com/mirrors/node/v16.14.2/node-v16.14.2-linux-x64.tar.xz &&
+        tar xf node-v16.14.2-linux-x64.tar.xz &&
+        ${SUDO} mv node-v16.14.2-linux-x64 /opt &&
+        ${SUDO} ln -sf /opt/node-v16.14.2-linux-x64/bin/node /usr/local/bin/node &&
+        ${SUDO} ln -sf /opt/node-v16.14.2-linux-x64/bin/npm  /usr/local/bin/npm &&
+        ${SUDO} ln -sf /opt/node-v16.14.2-linux-x64/bin/npx  /usr/local/bin/npx &&
+        rm -rf node-v16.14.2-linux-x64*
+    }
+fi
+
+config_npm() {
+    npm config set registry https://registry.npm.taobao.org
+    npm config set strict-ssl false
 }
 
-npm config set registry https://registry.npm.taobao.org
-npm config set strict-ssl false
-sudo npm install -g gulp-cli
-
-
-# python
-sudo apt install -y python3 python2 python3-pip ipython3
-
-mkdir -p $HOME/.pip
-cat > $HOME/.pip/pip.conf <<EOF
+config_pip3() {
+    mkdir -p $HOME/.pip
+    cat > $HOME/.pip/pip.conf <<EOF
 [global]
 index-url = https://repo.huaweicloud.com/repository/pypi/simple
 trusted-host = repo.huaweicloud.com
 disable-pip-version-check = true
 timeout = 120
 EOF
+    # virtualenv
+    python3 -m pip install virtualenv virtualenvwrapper
+    grep -q 'WORKON_HOME=' ${HOME}/.shell/shared_env || {
+        for f in '/usr/local/bin/virtualenvwrapper.sh' '/usr/share/virtualenvwrapper/virtualenvwrapper.sh'
+        do
+            [ -f "$f" ] || continue
+        done
+        mkdir -p ${HOME}/.virtualenvs
+        cat >> $HOME/.shell/shared_env <<EOF
 
-sudo ln -sf $(which python3) /usr/bin/python
-python -m pip install virtualenv virtualenvwrapper
-
-for f in $(which virtualenvwrapper.sh) '/usr/local/bin/virtualenvwrapper.sh' '/usr/share/virtualenvwrapper/virtualenvwrapper.sh'
-do
-    [ -f "$f" ] || continue
-    cat >> $HOME/.shell/shared_env <<EOF
-
-export WORKON_HOME=$HOME/.virtualenvs
-source $f
+export WORKON_HOME=${HOME}/.virtualenvs
+source ${f}
 EOF
-    break
-done
+    }
 
-cat >> $HOME/.shell/shared_alias <<EOF
+    # alias
+    ${SUDO} ln -sf $(which python3) /usr/bin/python
+    grep -q 'alias pi=' ${HOME}/.shell/shared_alias || {
+        cat >> $HOME/.shell/shared_alias <<EOF
 
 alias pi='python -m pip install'
 alias pu='python -m pip uninstall'
 alias pl='python -m pip list'
 EOF
+    }
+}
 
+config_gems() {
+    gem sources -r https://rubygems.org/ -a https://gems.ruby-china.com/
+    gem sources -u
+    gem sources -l
+    ${SUDO} gem install mdless solargraph
+}
 
-# ruby
-sudo apt install -y ruby-full
-gem sources -r https://rubygems.org/ -a https://gems.ruby-china.com/
-gem sources -u
-gem sources -l
-sudo gem install mdless solargraph
-
-
-# tclsh
-sudo apt install -y tcl expect
-cat > $HOME/.tclshrc <<'EOF'
+config_tclsh() {
+    cat > ${HOME}/.tclshrc <<'EOF'
 #!/usr/bin/env tclsh
 
 puts "\nHi $env(USER)! Welcome to Tcl/Tk World~\n"
 
 set tcl_prompt1 {puts -nonewline "$env(USER)@tclsh$tcl_version \$ "}
 EOF
-
-
-# java
-sudo apt install -y openjdk-17-jdk
-
-
-# vim
-sudo apt install -y vim xclip
-cp -r .vim ~
-
-vim -c "PlugInstall --sync | qa"
-coc_extensions=(
-    coc-cl
-    coc-clangd
-    coc-cmake
-    coc-css
-    coc-docker
-    coc-go
-    coc-highlight
-    coc-html
-    coc-java
-    coc-json
-    coc-markdownlint
-    coc-marketplace
-    coc-pairs
-    coc-pyright
-    coc-sh
-    coc-snippets
-    coc-solargraph
-    coc-tsserver
-    coc-vetur
-    coc-vimlsp
-)
-vim -c "CocInstall ${coc_extensions[@]} --sync | qa"
-
-cat > $HOME/.vim/coc-settings.json <<'EOF'
-{
 }
-EOF
+
+config_vimrc() {
+    vim --version | head -n1 | grep -q ' 8.2 ' || {
+        local version=$(python3 -V | grep -Eo '3.[0-9]')
+        wget -c --no-check-certificate --quiet https://github.com/vim/vim/archive/refs/tags/v8.2.5172.tar.gz &&
+        tar zxf v8.2.5172.tar.gz &&
+        (cd vim-8.2.5172 &&
+         ./configure --with-features=huge \
+             --enable-multibyte \
+             --enable-rubyinterp=yes \
+             --enable-python3interp=yes \
+             --with-python-config-dir=$(ls -d /usr/lib/python${version}/config-${version}*) \
+             --enable-perlinterp=yes \
+             --enable-luainterp=yes \
+             --enable-cscope \
+             --prefix=/usr/local &&
+         make -j$(grep -c processor /proc/cpuinfo) VIMRUNTIMEDIR=/usr/local/share/vim/vim82 &&
+         ${SUDO} make install
+        ) &&
+        rm -fr vim-8.2.5172 v8.2.5172.tar.gz
+    }
+    cp -rf .vim ${HOME}
+    vim -c "PlugInstall --sync | qa"
+    vim -c "PlugUpdate --sync | qa"
+    vim -c "CocInstall coc-cl coc-clangd coc-cmake coc-css coc-docker coc-go coc-highlight coc-html coc-java coc-json coc-markdownlint coc-marketplace coc-pairs coc-pyright coc-sh coc-snippets coc-solargraph coc-tsserver coc-vetur coc-vimlsp --sync"
+}
+
+config_pip3
+config_gems
+config_tclsh
+config_npm
+config_vimrc

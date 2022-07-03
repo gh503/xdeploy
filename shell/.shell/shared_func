@@ -4,43 +4,43 @@
 
 function l()
 {
-	[[ $# = 0 ]] && {
-		less
-		return
-	}
+    [[ $# = 0 ]] && {
+        less
+        return
+    }
 
-	local opt_less=
+    local opt_less=
 
-	test -n "$(find "$@" -maxdepth 0 -size +1M 2>/dev/null)"  && {
-		opt_less+='-n '
+    test -n "$(find "$@" -maxdepth 0 -size +1M 2>/dev/null)"  && {
+        opt_less+='-n '
 
-		if [[ "$1" =~ 'log' ]]; then
-			opt_less+='+G '
-		elif [[ "$PWD" =~ 'log' && ! "$1" =~ ^/ ]]; then
-			opt_less+='+G '
-		fi
-	}
+        if [[ "$1" =~ 'log' ]]; then
+            opt_less+='+G '
+        elif [[ "$PWD" =~ 'log' && ! "$1" =~ ^/ ]]; then
+            opt_less+='+G '
+        fi
+    }
 
-	less $opt_less "$@"
+    less $opt_less "$@"
 }
 
 function _cd_git_grep()
 {
-	cd "$1" || return
-	shift
+    cd "$1" || return
+    shift
 
-	command git --no-pager grep --line-number "$@" |
-	sed "s,^,$PWD/,"
+    command git --no-pager grep --line-number "$@" |
+    sed "s,^,$PWD/,"
 }
 
 function f()
 {
-	local file="/tmp/f_${*//[^-=a-zA-Z.0-9_]/_}"
-	local lines=$(wc -l < $file)
-	(( lines ++ ))
-	local search="${@: -1}"
-	search="${search//\//\\/}"
-	vim +"cgetfile $file" +"copen $lines" +/"$search"
+    local file="/tmp/f_${*//[^-=a-zA-Z.0-9_]/_}"
+    local lines=$(wc -l < $file)
+    (( lines ++ ))
+    local search="${@: -1}"
+    search="${search//\//\\/}"
+    vim +"cgetfile $file" +"copen $lines" +/"$search"
 }
 
 # vi patch
@@ -49,43 +49,43 @@ function vp() { vim `quilt top`; }
 # vi tmux scroll buffer
 function etc()
 {
-	local lines=$1
-	test -n "$lines" || lines=-1000
+    local lines=$1
+    test -n "$lines" || lines=-1000
 
-	local vim=vim.gtk3
-	if test -n "$DISPLAY"; then
-		command -v $vim >/dev/null || vim=vim.gnome
-		command -v $vim >/dev/null || vim=vim.gtk
-		command -v $vim >/dev/null || vim=vim
-	else
-		vim=vim
-	fi
-	tmux capture-pane -J -p -e -S $lines |
-	awk '
+    local vim=vim.gtk3
+    if test -n "$DISPLAY"; then
+        command -v $vim >/dev/null || vim=vim.gnome
+        command -v $vim >/dev/null || vim=vim.gtk
+        command -v $vim >/dev/null || vim=vim
+    else
+        vim=vim
+    fi
+    tmux capture-pane -J -p -e -S $lines |
+    awk '
 NR == 1 { line = $0; next }
 /^\x1B/ { print line "\x1B[0m"; line = $0; next; }
 // { print line; line = $0; next; }
 END { print line "\x1B[0m"; }
 ' |
-	$vim + +'set nowrap' +'AnsiEsc' -
-	# sed "s/$/\x1B\[0m/" |
+    $vim + +'set nowrap' +'AnsiEsc' -
+    # sed "s/$/\x1B\[0m/" |
 }
 
 function et()
 {
-	local lines=$1
-	test -n "$lines" || lines=-1000
+    local lines=$1
+    test -n "$lines" || lines=-1000
 
-	local vim=vim.gtk3
-	if test -n "$DISPLAY"; then
-		command -v $vim >/dev/null || vim=vim.gnome
-		command -v $vim >/dev/null || vim=vim.gtk
-		command -v $vim >/dev/null || vim=vim
-	else
-		vim=vim
-	fi
-	tmux capture-pane -J -p -S $lines |
-	$vim + -
+    local vim=vim.gtk3
+    if test -n "$DISPLAY"; then
+        command -v $vim >/dev/null || vim=vim.gnome
+        command -v $vim >/dev/null || vim=vim.gtk
+        command -v $vim >/dev/null || vim=vim
+    else
+        vim=vim
+    fi
+    tmux capture-pane -J -p -S $lines |
+    $vim + -
 }
 
 # A life without 'diff'? Unimaginably!!!!11!
@@ -103,7 +103,7 @@ function cl() { cd $1 && ls -a --color=auto; }
 # like vi(m).
 # It's shameless stolen from <http://www.vim.org/tips/tip.php?tip_id=167>
 function vman() {
-	command man "$@" | col -b | /usr/bin/view -c 'set ft=man nomod nolist' -c 'runtime macros/less.vim' --noplugin -
+    command man "$@" | col -b | /usr/bin/view -c 'set ft=man nomod nolist' -c 'runtime macros/less.vim' --noplugin -
 }
 
 # http://unix.stackexchange.com/questions/148/colorizing-your-terminal-and-shell-environment
@@ -122,84 +122,84 @@ function man() { _colorman man "$@"; }
 function perldoc() { command perldoc -n less "$@" |man -l -; }
 
 function mirror() {
-	lftp -c "mirror $@"
+    lftp -c "mirror $@"
 }
 
 function start() { /etc/init.d/$1 start; }
 function stop()  { /etc/init.d/$1 stop;  }
 
 function gt() {
-	grep "$@" | sort | uniq -c | sort -nr | less
+    grep "$@" | sort | uniq -c | sort -nr | less
 }
 
 function egg() {
-	local search="${@: -1}"
-	search="${search//\//\\/}"
-	vim +/"${search}" $(git grep -l $@)
+    local search="${@: -1}"
+    search="${search//\//\\/}"
+    vim +/"${search}" $(git grep -l $@)
 }
 
 function vc() {
-	if [[ $# == 1 && ! -e $1  ]]; then
-		if [[ $1 == *.rb ]]; then
-			echo '#!/usr/bin/ruby' > $1
-			chmod +x $1
-		else # [[ $1 == *.sh ]]; then
-			echo '#!/bin/bash' > $1
-			chmod +x $1
-		fi
-	fi
-	vi $@
+    if [[ $# == 1 && ! -e $1  ]]; then
+        if [[ $1 == *.rb ]]; then
+            echo '#!/usr/bin/ruby' > $1
+            chmod +x $1
+        else # [[ $1 == *.sh ]]; then
+            echo '#!/bin/bash' > $1
+            chmod +x $1
+        fi
+    fi
+    vi $@
 }
 
 function lc() {
-	ls --color | cut -c-$COLUMNS
+    ls --color | cut -c-$COLUMNS
 }
 
 function pssk() {
-	local processes
-	processes=`ps aux`
-	echo "$processes" | grep -E "$*" | awk '{print $2}' | xargs kill
+    local processes
+    processes=`ps aux`
+    echo "$processes" | grep -E "$*" | awk '{print $2}' | xargs kill
 }
 
 function df() {
-	if [[ $# = 0 && -x /usr/bin/pydf ]]; then
-		command pydf
-	else
-		command df -h $*
-	fi
+    if [[ $# = 0 && -x /usr/bin/pydf ]]; then
+        command pydf
+    else
+        command df -h $*
+    fi
 }
 
 function bbs() {
-	if [[ "$LANG" = "zh_CN.UTF-8" ]]; then
-		luit -encoding GBK  telnet -8 bbs6
-	elif [[ "$LANG" = "zh_CN.GBK" || "$LC_ALL" = "zh_CN.GBK" ]]; then
-		telnet -8 bbs6
-	fi
+    if [[ "$LANG" = "zh_CN.UTF-8" ]]; then
+        luit -encoding GBK  telnet -8 bbs6
+    elif [[ "$LANG" = "zh_CN.GBK" || "$LC_ALL" = "zh_CN.GBK" ]]; then
+        telnet -8 bbs6
+    fi
 }
 
 tc () {
-	tar -cz --force-local -f `basename $1`-`date +%F`.tar.gz $@
+    tar -cz --force-local -f `basename $1`-`date +%F`.tar.gz $@
 }
 
 ai () {
-	local sudo=sudo
-	[[ $USER = 'root' ]] && sudo=
+    local sudo=sudo
+    [[ $USER = 'root' ]] && sudo=
 
-	local log=/var/log/apt-get-install.log
+    local log=/var/log/apt-get-install.log
 
-	[[ -f $log ]] || {
-		$sudo touch $log
-		$sudo chmod 666 $log
-	}
+    [[ -f $log ]] || {
+        $sudo touch $log
+        $sudo chmod 666 $log
+    }
 
-	echo "$@" >> $log
+    echo "$@" >> $log
 
-	$sudo apt-get install "$@"
+    $sudo apt-get install "$@"
 }
 
 av () {
-	dpkg -l $@
-	apt-cache madison $@
+    dpkg -l $@
+    apt-cache madison $@
 }
 
 ad () {
@@ -212,13 +212,13 @@ dL () {
 
 # list the files of a package
 #function al() {
-#	local listfile=/var/lib/dpkg/info/${1}.list
-#	[[ -f $listfile ]] && less $listfile
+#   local listfile=/var/lib/dpkg/info/${1}.list
+#   [[ -f $listfile ]] && less $listfile
 #}
 
 function lw () {
-	local whichcmd=`command which $1`
-	[[ -n "$whichcmd" ]] && ls -l "$whichcmd" && ldd "$whichcmd";
+    local whichcmd=`command which $1`
+    [[ -n "$whichcmd" ]] && ls -l "$whichcmd" && ldd "$whichcmd";
 }
 
 function nocomment () { cat $* | sed -e '/^[ ]*#.*/d' -e 's/[ ]*#.*$//' | uniq ; }
@@ -228,9 +228,9 @@ function nfsmount() { mount -o tcp,soft,rsize=32768,wsize=32768 $* ; }
 function lomount() { mount -o loop  "$1" "$2" ; }
 function isomount() { mount -t iso9660 -o loop  "$1" "${2:-/mnt/iso}" ; }
 
-function pp () {		# ps
-	local pids="$(pidof $1)"
-	[[ -n $pids ]] && ps -fp $pids
+function pp () {        # ps
+    local pids="$(pidof $1)"
+    [[ -n $pids ]] && ps -fp $pids
 }
 
 # view log with colors
@@ -268,7 +268,7 @@ function _colors() {
 }
 
 function test_color () {
-	echo -e "\e[38;$1;$(($2))m$1 bytes \e[0m\e[48;$1;$(($2))mcolor $2\e[0m"
+    echo -e "\e[38;$1;$(($2))m$1 bytes \e[0m\e[48;$1;$(($2))mcolor $2\e[0m"
 }
 
 # Use vim to convert plaintext to HTML

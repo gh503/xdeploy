@@ -55,25 +55,25 @@ function title {
         hostprefix="${HOST//.*}:"
     fi
     if [ $UID -eq 0 ] ; then
-	    hostprefix="${hostprefix/:/#}"
+        hostprefix="${hostprefix/:/#}"
     fi
     if [[ $TERM =~ ^(screen|tmux) ]]; then
-	    if [[ `echo $1$2 | wc -c` != `echo $1$2 | wc -m` ]]; then # screen cannot handle utf-8 chiness chars
-		    tt=`echo $1 |  LANG= sed 's/[^[:print:]]\+/?/g'`
-		    hs=`echo $2 |  LANG= sed 's/[^[:print:]]\+/?/g'`
-		    #  hs=`echo $hs | sed 's/[^0-9a-zA-Z#+=_/-]\+/?/g'`
-		    #  tt=`echo $tt | sed 's/[^0-9a-zA-Z#+=_/-]\+/?/g'`
-	    else
-		    tt=$1
-		    hs=$2
-	    fi
-	    # Use these two for GNU Screen:
-	    #  print -nR $'\033k'$tt$'\033'\\
-	    echo -ne '\ek'$tt'\e'\\
-	    #[ -n "$2" ] && print -nR " $2"
-	    #  print -nR $'\033'\\
-	    print -nR $'\033]0;'$hostprefix$hs$'\a'
-	    #  echo hi $tt $hostprefix $hs
+        if [[ `echo $1$2 | wc -c` != `echo $1$2 | wc -m` ]]; then # screen cannot handle utf-8 chiness chars
+            tt=`echo $1 |  LANG= sed 's/[^[:print:]]\+/?/g'`
+            hs=`echo $2 |  LANG= sed 's/[^[:print:]]\+/?/g'`
+            #  hs=`echo $hs | sed 's/[^0-9a-zA-Z#+=_/-]\+/?/g'`
+            #  tt=`echo $tt | sed 's/[^0-9a-zA-Z#+=_/-]\+/?/g'`
+        else
+            tt=$1
+            hs=$2
+        fi
+        # Use these two for GNU Screen:
+        #  print -nR $'\033k'$tt$'\033'\\
+        echo -ne '\ek'$tt'\e'\\
+        #[ -n "$2" ] && print -nR " $2"
+        #  print -nR $'\033'\\
+        print -nR $'\033]0;'$hostprefix$hs$'\a'
+        #  echo hi $tt $hostprefix $hs
     elif [[ $TERM == "xterm" || $TERM =~ ^rxvt ]]; then
       # Use this one instead for XTerms:
       print -nR $'\033]0;'$hostprefix$2$'\a'
@@ -195,14 +195,14 @@ function setprompt-long () {
 
   DATEFMT_CN='%D{%H:%M}'
   if [[ $LANG = 'zh_CN.GBK' ]]; then
-	  DATEFMT=$DATEFMT_CN
+      DATEFMT=$DATEFMT_CN
 # zsh do not support utf-8 yet...
 #  elif [[ $LANG = 'zh_CN.UTF-8' ]]; then
-#	  DATEFMT=`echo $DATEFMT_CN|iconv -f GBK -t UTF-8`
+#     DATEFMT=`echo $DATEFMT_CN|iconv -f GBK -t UTF-8`
   else
-	  #DATEFMT_EN='%D{%a %b %d} %D{%I:%M:%S%P}'
-	  #DATEFMT=$DATEFMT_EN
-	  DATEFMT='%D{%H:%M}'
+      #DATEFMT_EN='%D{%a %b %d} %D{%I:%M:%S%P}'
+      #DATEFMT=$DATEFMT_EN
+      DATEFMT='%D{%H:%M}'
   fi
 
   if [[ -n $SSH_CONNECTION || -n $SSH_CLIENT  ]]; then
@@ -237,22 +237,22 @@ function setprompt () {
         if [[ -n $SSH_CONNECTION || -n $SSH_CLIENT ]]; then
                 hostprefix="%{$fg_bold[black]%}@%{$fg[blue]%}%m"
         fi
-	if [ $UID -eq 0 ] ; then
-		#PROMPT=$'%B%(?..[%?] )%b%{\e[1;31m%}%n%{\e[1;30m%}@%{\e[1;34m%}%m %U%~%u%{\e[1;31m%}%#%{\e[0m%} '
-		PROMPT="%{$fg_bold[red]%}%n$hostprefix %{$reset_color%}%U%~%u%{$fg_bold[black]%}%#%{$reset_color%} %{$fg_bold[yellow]%}"
-	else
-		#PROMPT=$'%B%(?..[%?] )%b%{\e[1;33m%}%n%{\e[1;30m%}@%{\e[1;34m%}%m %U%~%u%{\e[1;30m%}%#%{\e[0m%} '
-		PROMPT="%{$fg_bold[yellow]%}%n$hostprefix %{$reset_color%}%U%~%u%{$fg_bold[black]%}%#%{$reset_color%} %B"
-	fi
-	#RPROMPT="%(?..%{$bg_bold[red]%} [ %? ] %{$reset_color%} %b:-(%B)"
-	#RPROMPT="%{$fg_no_bold[green]%}%~%{$reset_color%}"
+    if [ $UID -eq 0 ] ; then
+        #PROMPT=$'%B%(?..[%?] )%b%{\e[1;31m%}%n%{\e[1;30m%}@%{\e[1;34m%}%m %U%~%u%{\e[1;31m%}%#%{\e[0m%} '
+        PROMPT="%{$fg_bold[red]%}%n$hostprefix %{$reset_color%}%U%~%u%{$fg_bold[black]%}%#%{$reset_color%} %{$fg_bold[yellow]%}"
+    else
+        #PROMPT=$'%B%(?..[%?] )%b%{\e[1;33m%}%n%{\e[1;30m%}@%{\e[1;34m%}%m %U%~%u%{\e[1;30m%}%#%{\e[0m%} '
+        PROMPT="%{$fg_bold[yellow]%}%n$hostprefix %{$reset_color%}%U%~%u%{$fg_bold[black]%}%#%{$reset_color%} %B"
+    fi
+    #RPROMPT="%(?..%{$bg_bold[red]%} [ %? ] %{$reset_color%} %b:-(%B)"
+    #RPROMPT="%{$fg_no_bold[green]%}%~%{$reset_color%}"
 }
 
 
 LISTPROMPT=''
 
 if false; then
-	setprompt-long
+    setprompt-long
 else
-	setprompt
+    setprompt
 fi

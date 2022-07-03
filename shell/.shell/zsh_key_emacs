@@ -2,10 +2,10 @@
 
 bindkey -e
 
-bindkey '\ev' vi-cmd-mode		## M-v
-bindkey "\ei" menu-complete		## M-i
-bindkey '\eI' reverse-menu-complete	## M-I
-bindkey "\ee" expand-cmd-path		## M-e
+bindkey '\ev' vi-cmd-mode       ## M-v
+bindkey "\ei" menu-complete     ## M-i
+bindkey '\eI' reverse-menu-complete ## M-I
+bindkey "\ee" expand-cmd-path       ## M-e
 
 # search backwards for a line which has the entire starting point
 # up to the cursor position the same as the current line.
@@ -13,7 +13,7 @@ bindkey '^p' history-beginning-search-backward
 bindkey '^n' history-beginning-search-forward
 
 case $TERM in
-	linux|rxvt-unicode|mlterm|screen)
+    linux|rxvt-unicode|mlterm|screen)
   bindkey "[2~" yank                 ## Insert
   bindkey "[3~" delete-char          ## Delete
   bindkey "[5~" up-line-or-history   ## PageUp
@@ -21,7 +21,7 @@ case $TERM in
   bindkey "[1~" beginning-of-line    ## Home
   bindkey "[4~" end-of-line          ## End
 ;;
-	xterm|rxvt)
+    xterm|rxvt)
   bindkey "[2~" yank                 ## Insert
   bindkey "[3~" delete-char          ## Delete
   bindkey "[5~" up-line-or-history   ## PageUp
@@ -34,8 +34,8 @@ esac
 # do 'cd' on TAB at start of cmdline
 # http://www.zsh.org/mla/users/2004/msg00744.html
 cd-complete-path() {
-	[[ -z "$BUFFER" && -z "$PREBUFFER" ]] && LBUFFER="cd "
-	zle expand-or-complete "$@"
+    [[ -z "$BUFFER" && -z "$PREBUFFER" ]] && LBUFFER="cd "
+    zle expand-or-complete "$@"
 }
 zle -N cd-complete-path
 bindkey '\t' cd-complete-path
@@ -43,8 +43,8 @@ bindkey '\t' cd-complete-path
 # do 'ls' on empty cmdline
 # disabled for vi-history-search-backward
 # ls-on-empty-line() {
-# 	[[ -z "$BUFFER" && -z "$PREBUFFER" ]] && LBUFFER="ls"
-# 	zle .accept-line "$@"
+#   [[ -z "$BUFFER" && -z "$PREBUFFER" ]] && LBUFFER="ls"
+#   zle .accept-line "$@"
 # }
 # zle -N ls-on-empty-line
 # bindkey -M main '\r' ls-on-empty-line

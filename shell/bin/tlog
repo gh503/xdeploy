@@ -3,7 +3,7 @@
 . colors
 
 tdate() {
-    date +'%Y/%m/%d %H:%M:%S.%6N'
+    date +'%Y/%m/%d %H:%M:%S'
 }
 
 trim() {
@@ -31,23 +31,23 @@ printP() {
 }
 
 tdebug() {
-    printB "$(tdate) $@"
+    echo -e "[$(tdate)][${CYAN}DEBUG${RESET}] $@"
 }
 
 tinfo() {
-    printG "$(tdate) $@"
+    echo -e "[$(tdate)][${GREEN}INFO${RESET}] $@"
 }
 
 twarn() {
-    printY "$(tdate) $@" >&2
+    echo -e "[$(tdate)][${YELLOW}WARN${RESET}] $@" >&2
 }
 
 terror() {
-    printR "$(tdate) $@" >&2
+    echo -e "[$(tdate)][${RED}ERROR${RESET}] $@" >&2
 }
 
 tfatal() {
-    printP "$(tdate) $@" >&2
+    echo -e "[$(tdate)][${BLINK}${MAGENTA}FATAL${RESET}] $@"
 }
 
 tlog() {

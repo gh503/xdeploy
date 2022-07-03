@@ -1,5 +1,6 @@
 let g:mapleader=" "
 
+map E :e<CR>
 map S :w<CR>
 map Q :q<CR>
 map R :source $MYVIMRC<CR>
@@ -49,8 +50,8 @@ nmap <LEADER>rt :%retab!<CR>
 nmap <LEADER>hl :set hlsearch!<CR>
 
 
-" 全选并复制
-map <C-A> ggVGY
+" 全选
+map <C-A> ggVG
 " 选中状态下复制
 vmap <C-c> "+y
 " 粘贴

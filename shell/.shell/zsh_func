@@ -33,11 +33,11 @@ po () {
 }
 
 h () {
-	if [[ $# = 0 ]]; then
-		history -dD -$(( +LINES ? LINES - 4 : 20 ))
-	else
-		fc -lm "$*" 1 -1
-	fi
+    if [[ $# = 0 ]]; then
+        history -dD -$(( +LINES ? LINES - 4 : 20 ))
+    else
+        fc -lm "$*" 1 -1
+    fi
 }
 
 function window_size () {
@@ -51,14 +51,14 @@ function window_size () {
     }
     my_print '1'
     for ((j = 2; j < LINES; j++)); do
-	if [ $((j%10)) -eq 0 ]; then
-	    my_print $j
+    if [ $((j%10)) -eq 0 ]; then
+        my_print $j
         else
-	    my_print '|'
+        my_print '|'
         fi
     done
     my_print "${j}${(l:COLUMNS-${#COLUMNS}-${#j}::-:)}${COLUMNS}"
-	sleep 1
+    sleep 1
 }
 
 # Usage: url < file_with_url
@@ -92,21 +92,21 @@ zle -N replace-string
 # zsh with perl-regex - check it; e.g.:
 # regcheck '\s\d\.\d{3}\.\d{3} Euro' ' 1.000.000 Euro'
 function regcheck() {
-	zmodload -i zsh/pcre
-	pcre_compile $1 && \
-	pcre_match $2 && echo "regex matches" || echo "regex does not match"
+    zmodload -i zsh/pcre
+    pcre_compile $1 && \
+    pcre_match $2 && echo "regex matches" || echo "regex does not match"
 }
 
 # list files which have been modified within the last x days
 function new() {
-	print -l *(m-$1)
+    print -l *(m-$1)
 }
 
 
 # press F10 and calculate :)
 arith-eval-echo() {
-	LBUFFER="${LBUFFER}echo \$(( "
-	RBUFFER=" ))$RBUFFER"
+    LBUFFER="${LBUFFER}echo \$(( "
+    RBUFFER=" ))$RBUFFER"
 }
 zle -N arith-eval-echo
 bindkey "^[[21~" arith-eval-echo

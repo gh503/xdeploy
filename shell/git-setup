@@ -1,0 +1,58 @@
+#!/bin/bash
+
+default_user='angusrobot'
+default_email='angus_robot@163.com'
+
+if [ ${UID} -eq 0 ] ;then
+    SUDO=
+else
+    SUDO=sudo
+fi
+
+# git shell
+[ -f '/etc/apt/sources.list.d/github-cli.list' ] || {
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | ${SUDO} dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | ${SUDO} tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+}
+${SUDO} apt update
+${SUDO} apt install -y git gh
+
+read -p "请输入Git用户名(current: $(git config --global user.name), default: ${default_user}): " git_username
+read -p "请输入Git用户邮箱(current: $(git config --global user.email), default: ${default_email}): " git_useremail
+
+# 账号
+git config --global user.name ${git_username:-${default_user}}
+git config --global user.email ${git_useremail:-${default_email}}
+
+# 编辑
+git config --global core.editor vim
+git config --global core.ignorecase false       # 不许忽略文件名大小写
+git config --global core.autocrlf false         # 换行模式为 input，即提交时转换为LF，检出时不转换
+git config --global core.safecrlf true          # 拒绝提交包含混合换行符的文件
+git config --global core.fileMode false         # 忽略文件mode变化
+git config --global core.longpaths true         # 支持超长路径
+git config --global core.quotepath false        # 支持中文路径
+git config --global gui.encoding utf-8
+git config --global i18n.commitEncoding utf-8
+git config --global i18n.logOutputEncoding utf-8
+git config --global svn.pathnameencoding utf-8
+git config --global merge.tool vimdiff
+git config --global mergetool.keepBackup true
+git config --global commit.template $HOME/.git_github
+:> $HOME/.git_github
+
+# 配色
+git config --global color.status auto
+git config --global color.branch auto
+git config --global color.ui auto
+git config --global color.diff auto
+git config --global color.interactive auto
+
+# 安全认证
+git config --global http.sslVerify false
+git config --global http.postBuffer 1073741824  # 1GB
+git config --global credential.helper store
+
+# 别名
+git config --global alias.st status
+git config --global alias.lg "log --color --graph --pretty=format:'%C(bold red)%h%C(reset) - %C(bold green)(%cr)%C(bold blue)<%an>%C(reset) -%C(bold yellow)%d%C(reset) %s'"

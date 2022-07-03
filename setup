@@ -1,21 +1,24 @@
 #!/bin/bash
 
-sudo cp -a /etc/apt/sources.list{,.bak}
-sudo sed -i "s@http://.*archive.ubuntu.com@http://repo.huaweicloud.com@g" /etc/apt/sources.list
-sudo sed -i "s@http://.*security.ubuntu.com@http://repo.huaweicloud.com@g" /etc/apt/sources.list
-sudo apt update
+if [ ${UID} -eq 0 ] ;then
+    SUDO=
+else
+    SUDO=sudo
+fi
 
-pkgs=(
+[ -f '/etc/apt/sources.list.bak' ] || ${SUDO} cp -a /etc/apt/sources.list{,.bak}
+${SUDO} sed -i "s@http://.*archive.ubuntu.com@http://repo.huaweicloud.com@g" /etc/apt/sources.list
+${SUDO} sed -i "s@http://.*security.ubuntu.com@http://repo.huaweicloud.com@g" /etc/apt/sources.list
+${SUDO} apt update
+
+basic_debian_pkgs=(
     build-essential manpages-dev
     clang-tools clangd
-    libssl-dev cmake
-    gawk tree
-    curl wget
+    libssl-dev gcc g++ make cmake
+    dos2unix curl wget nmap tree
 )
-
-sudo apt install -y ${pkgs[@]}
-sudo apt dist-upgrade -y
+${SUDO} apt install -y ${basic_debian_pkgs[@]}
+${SUDO} apt dist-upgrade -y
 
 (cd shell && bash setup)
 (cd vim && bash setup)
-(cd virtualize && bash setup)

@@ -20,18 +20,23 @@ export PATH=$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/lib/git-core:/usr/sbin
 
 # to run xeyes as root after su
 if [[ -n $SSH_CONNECTION || -n $DISPLAY ]]; then
-	export XAUTHORITY=~/.Xauthority
+    export XAUTHORITY=~/.Xauthority
 fi
 
 # if [[ -n $SSH_CONNECTION || $TERM = 'linux' ]]; then
-	# export LANG=C
+    # export LANG=C
 # fi
 
 # if [[ -n $DISPLAY ]]; then
-	# export LANG=zh_CN.GBK
+    # export LANG=zh_CN.GBK
 # fi
 
 # if [[ $LANG =~ 'UTF-8' ]]; then
-	# export LESSCHARSET=UTF-8
-	# export LESSCHARSET=latin1
+    # export LESSCHARSET=UTF-8
+    # export LESSCHARSET=latin1
 # fi
+
+export LANG=zh_CN.utf-8
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=\@im=fcitx

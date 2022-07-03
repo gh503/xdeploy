@@ -14,23 +14,23 @@ export GPG_TTY
 # Avoid stty warning in rsync
 if [ -t 0 ]; then
 
-	if [ -x /usr/bin/setterm ]; then
-		# setterm: terminal screen does not support --ulcolor
-		setterm -ulcolor bright yellow 2>/dev/null
-		setterm -hbcolor bright red
-	fi
+    if [ -x /usr/bin/setterm ]; then
+        # setterm: terminal screen does not support --ulcolor
+        setterm -ulcolor bright yellow 2>/dev/null
+        setterm -hbcolor bright red
+    fi
 
-	# chinese
-	#stty cs8 -istrip
+    # chinese
+    #stty cs8 -istrip
 
-	stty pass8
-	#  tty > /dev/null &&
-	stty -ixon -ixoff
+    stty pass8
+    #  tty > /dev/null &&
+    stty -ixon -ixoff
 
-	# enlarge serial port screen size to fit my T61 window size
-	if [[ "$(stty size)" = "0 0" ]]; then
-		stty rows 42 cols 121
-	fi
+    # enlarge serial port screen size to fit my T61 window size
+    if [[ "$(stty size)" = "0 0" ]]; then
+        stty rows 42 cols 121
+    fi
 fi
 
 default_shell=${SHELL##*/}
@@ -38,3 +38,5 @@ if [[ "$default_shell" = 'bash' || "$default_shell" = 'zsh' ]] ;then
     [ -f $HOME/${SHELL_DIR}/git-completion.$default_shell ] &&
     . git-completion.$default_shell
 fi
+
+fcitx > /dev/null 2>&1

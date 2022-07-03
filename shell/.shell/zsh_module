@@ -17,7 +17,7 @@ zmodload -i zsh/complist
 
 # A module with utility builtins needed for the shell function based completion system.
 zmodload -ab zsh/computil comparguments compdescribe \
-	compfiles compgroups compquote comptags comptry compvalues
+    compfiles compgroups compquote comptags comptry compvalues
 
 # Some date/time commands and parameters.
 zmodload -ab zsh/datetime strftime
@@ -37,21 +37,21 @@ zmodload -ap zsh/mapfile mapfile
 # Standard scientific functions for use in mathematical evaluations.
 if [[ $ZSH_VERSION > 4.2 ]]; then
 zmodload -af zsh/mathfunc abs int float acos acosh asin asinh atan atanh \
-	cbrt ceil cos cosh erf erfc exp expm1 fabs floor gamma j0 j1 lgamma log log10  \
-	log1p logb sin sinh sqrt tan tanh y0 y1 ilogb signgam \
-	copysign fmod hypot nextafter jn yn ldexp scalb abs  float int rand rand48
+    cbrt ceil cos cosh erf erfc exp expm1 fabs floor gamma j0 j1 lgamma log log10  \
+    log1p logb sin sinh sqrt tan tanh y0 y1 ilogb signgam \
+    copysign fmod hypot nextafter jn yn ldexp scalb abs  float int rand rand48
 elif [[ $ZSH_VERSION > 4 ]]; then
 zmodload -af zsh/mathfunc acos acosh asin asinh atan atanh \
-	cbrt ceil cos cosh erf erfc exp expm1 fabs floor gamma j0 j1 lgamma log log10  \
-	log1p logb sin sinh sqrt tan tanh y0 y1 ilogb signgam \
-	copysign fmod hypot nextafter jn yn ldexp scalb abs  float int rand rand48
+    cbrt ceil cos cosh erf erfc exp expm1 fabs floor gamma j0 j1 lgamma log log10  \
+    log1p logb sin sinh sqrt tan tanh y0 y1 ilogb signgam \
+    copysign fmod hypot nextafter jn yn ldexp scalb abs  float int rand rand48
 fi
 
 # Access to internal hash tables via special associative arrays.
 zmodload -ap zsh/parameter  options commands functions dis_functions \
-	dis_builtins reswords dis_reswords dis_aliases galiases \
-	dis_galiases saliases dis_saliases parameters modules dirstack history \
-	historywords jobdirs jobtexts jobstates nameddirs userdirs
+    dis_builtins reswords dis_reswords dis_aliases galiases \
+    dis_galiases saliases dis_saliases parameters modules dirstack history \
+    historywords jobdirs jobtexts jobstates nameddirs userdirs
 
 
 # Interface to the PCRE library.

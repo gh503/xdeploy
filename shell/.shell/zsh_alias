@@ -9,6 +9,12 @@ alias 6='cd -6'
 alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
+alias A='cd -10'
+alias B='cd -11'
+alias C='cd -12'
+alias D='cd -13'
+alias E='cd -14'
+alias F='cd -15'
 
 # named dirs
 hash -d music=/home/music
@@ -89,7 +95,7 @@ do
                 do
                         alias -s $suffix=$MOVIE_PLAYER
                 done
-		break
+        break
         fi
 done
 
@@ -101,7 +107,7 @@ do
                 do
                         alias -s $suffix=$MUSIC_PLAYER
                 done
-		break
+        break
         fi
 done
 
@@ -114,7 +120,7 @@ do
                 do
                         alias -s $suffix=$IMAGE_VIEWER
                 done
-		break
+        break
         fi
 done
 

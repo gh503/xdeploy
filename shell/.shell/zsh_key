@@ -1,4 +1,4 @@
-# Key bindings 
+# Key bindings
 
 bindkey -v
 
@@ -40,7 +40,7 @@ bindkey "^e" end-of-line
 
 
 case $TERM in
-	linux|rxvt-unicode|mlterm|screen)
+    linux|rxvt-unicode|mlterm|screen)
   bindkey "[2~" yank                 ## Insert
   bindkey "[3~" delete-char          ## Delete
   bindkey "[5~" up-line-or-history   ## PageUp
@@ -48,7 +48,7 @@ case $TERM in
   bindkey "[1~" beginning-of-line    ## Home
   bindkey "[4~" end-of-line          ## End
 ;;
-	xterm|rxvt)
+    xterm|rxvt)
   bindkey "[2~" yank                 ## Insert
   bindkey "[3~" delete-char          ## Delete
   bindkey "[5~" up-line-or-history   ## PageUp

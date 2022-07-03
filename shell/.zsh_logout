@@ -1,5 +1,0 @@
-# System-wide .zsh_logout for login shells
-# executed when a shell logout
-
-#Add log user behavior history >> /var/audit/$(whoami)_history
-echo "$(date '+%F %T') $(whoami) logout" >> /var/audit/$(whoami)_history_$(date '+%F')

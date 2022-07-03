@@ -55,8 +55,10 @@ alias ggl="git grep --color -n -l"
 alias grc="git rebase --continue"
 
 # alias sx='screen -x'
-alias ta='tmux attach -t'
+alias tm='tmux'
+alias ta='tmux attach'
 alias ts='tmux new-session -s'
+alias tt='tmux attach -t'
 
 # open my email outbox at ~/Mail/archive/outbox
 alias o='mutt -f \<'
@@ -211,7 +213,6 @@ alias ......='cd ../../../../..'
 alias md='mkdir -p'
 alias rd=rmdir
 alias d='dirs -v'
-
 
 if [ "$TERM" != dumb ] && [ -x /usr/bin/grc ]
 then
