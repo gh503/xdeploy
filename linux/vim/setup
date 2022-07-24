@@ -68,9 +68,9 @@ EOF
     grep -q 'alias pi=' ${HOME}/.shell/shared_alias || {
         cat >> $HOME/.shell/shared_alias <<EOF
 
-alias pi='python -m pip install'
-alias pu='python -m pip uninstall'
-alias pl='python -m pip list'
+alias pi='python3 -m pip install'
+alias pu='python3 -m pip uninstall'
+alias pl='python3 -m pip list'
 EOF
     }
 }
