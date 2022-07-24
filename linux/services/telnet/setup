@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ${UID} -eq 0 ] ;then
+    SUDO=
+else
+    SUDO=sudo
+fi
+
+${SUDO} apt install -y openbsd-inetd telnetd
